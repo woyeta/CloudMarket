@@ -26,7 +26,7 @@ class CustomUser(AbstractUser):
         return f"{self.id} {self.first_name}"
 
 
-class VerifiedUser(CustomUser):
+class VerifiedUser(models.Model):
     PAYMENT_CHOICES = (
         ('upi', 'UPI'),
         ('card', 'Card')
@@ -34,7 +34,7 @@ class VerifiedUser(CustomUser):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="verified_user")
     payment_method = models.CharField(max_length=4, choices=PAYMENT_CHOICES, blank=False, null=False, default='upi')
 
-class Developer(CustomUser):
+class Developer(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="developer_user")
     developer_alias = models.CharField(max_length=15, unique=True, blank = False, null = False)
     payment_details = models.CharField(max_length=51, unique=False, blank = False, null = False)

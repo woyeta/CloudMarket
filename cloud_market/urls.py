@@ -15,8 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from marketplace import views as marketplace_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('marketplace.urls')),
+    path('', include('django.contrib.auth.urls')),
+    path('login-redirect/', marketplace_views.login_redirect, name="login_redirect")
 ]

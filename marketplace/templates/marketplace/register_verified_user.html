@@ -1,0 +1,12 @@
+{% extends "marketplace/base.html" %}
+
+{% block title %}User Registration{% endblock title %}
+
+{% block content %}
+    <h2>Register - User</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type=submit name="register">Register</button>
+    </form>
+{% endblock content %}
