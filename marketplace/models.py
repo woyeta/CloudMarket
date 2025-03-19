@@ -55,6 +55,7 @@ class Application(models.Model):
     os = models.ManyToManyField(OperatingSystem, related_name='os_apps')
     downloads = models.IntegerField(default=0.0, validators=[MinValueValidator(0)])
     release_date = models.DateField(auto_now_add=True)
+    categories = models.ManyToManyField(Category, related_name="category_apps")
 
 
     def update_rating(self):

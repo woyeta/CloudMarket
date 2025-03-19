@@ -1,0 +1,35 @@
+{% extends "marketplace/base.html" %}
+
+{% block title %}{{app.app_name}}{% endblock title %}
+
+{% block content %}
+<h1>{{app.app_name}}</h1>
+<p>Developed By: {{app.developer.developer_alias}}</p>
+<p>Rating: {{app.rating}}</p>
+<p>Downloads: {{app.downloads}}</p>
+<p>Released on: {{ app.release_date }}</p>
+
+{% if app.price > 0 %}
+<p>Price: {{app.price}}</p>
+{% else %}
+<p>Price: Free</p>
+{% endif %}
+
+<h3>Description</h3>
+<p>{{app.app_description}}</p>
+
+<h3>Categories</h3>
+<ul>
+    {% for category in app.categories.all %}
+        <li>{{ category.category_name }}</li>
+    {% endfor %}
+</ul>
+        
+<h3>Compatible Operating Systems</h3>
+<ul>
+    {% for os in app.os.all %}
+        <li>{{ os.os_name }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

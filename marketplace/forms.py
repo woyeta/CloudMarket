@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate
-from .models import CustomUser, VerifiedUser, Developer
+from .models import CustomUser, VerifiedUser, Developer, Application, Category, OperatingSystem
 
 class VerifiedUserRegistrationForm(UserCreationForm):
     PAYMENT_CHOICES = (
@@ -53,3 +53,26 @@ class DeveloperRegistrationForm(UserCreationForm):
             )
         
         return user
+
+class ApplicationPublishForm(forms.ModelForm):
+
+    categories = forms.ModelMultipleChoiceField(
+        queryset= Category.objects.all(),
+        widget = forms.CheckboxSelectMultiple(),
+        required = False
+    )
+
+    os = forms.ModelMultipleChoiceField(
+        queryset= OperatingSystem.objects.all(),
+        widget = forms.CheckboxSelectMultiple(),
+        required = False
+    )
+
+    class Meta:
+        model = Application
+        fields = ['app_name', 'app_description', 'price', 'categories', 'os']
+
+        widgets = {
+            'app_description': forms.Textarea(attrs={'rows': 4}),
+        }
+

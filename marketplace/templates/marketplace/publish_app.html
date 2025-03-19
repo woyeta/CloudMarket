@@ -1,13 +1,13 @@
 {% extends "marketplace/base.html" %}
 
-{% block title %}User Registration{% endblock title %}
+{% block title %}Publish App{% endblock title %}
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <h2>Register - User</h2>
+    <h2>Publish App</h2>
     <form method="POST">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type=submit name="register">Register</button>
+        <button type=submit name="publish_app">Publish</button>
     </form>
 {% endblock content %}
