@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from .models import Developer, Application
-from .forms import VerifiedUserRegistrationForm, DeveloperRegistrationForm, ApplicationPublishForm
+from .models import VerifiedUser, Developer, Application
+from .forms import VerifiedUserRegistrationForm, DeveloperRegistrationForm, ApplicationPublishForm, ApplicationReviewForm
 
 def home(response):
     return render(response, "marketplace/home.html", {})
@@ -81,3 +81,22 @@ def view_app_details(response, app_id):
     }
 
     return render(response, 'marketplace/app_details.html', context)
+
+@login_required
+def add_app_review(response, app_id):
+    app = get_object_or_404(Application, id=app_id)
+
+    if response.user.user_type=='developer':
+        return redirect('/')
+    
+    if response.method=="POST":
+        form = ApplicationReviewForm(response.POST, app=app, user=response.user)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect(f'/apps/{app.id}/')
+    
+    form = ApplicationReviewForm(app=app, user=response.user)
+    
+    return render(response, 'marketplace/review_app.html', {'form': form, 'app_name': app.app_name})

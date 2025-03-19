@@ -59,7 +59,7 @@ class Application(models.Model):
 
 
     def update_rating(self):
-        avg_rating = self.reviews.aggregate(avg_rating = Avg('rating'))['avg_rating']
+        avg_rating = self.reviews_received.aggregate(avg_rating = Avg('rating_given'))['avg_rating']
         self.rating = avg_rating if avg_rating is not None else 0.0
         self.save()
     
@@ -78,6 +78,12 @@ class Review(models.Model):
     comment = models.CharField(max_length=100, blank = True, null = True)
     creation_date = models.DateField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('reviewer', 'app_reviewed')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.app_reviewed.update_rating()
 
 class Payment(models.Model):
     PAYMENT_CHOICES = (
