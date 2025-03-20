@@ -54,16 +54,4 @@
         {{ form|crispy }}
         <button type=submit class="publish-button" name="publish_app">Publish</button>
     </form>
-    <div>
-        {% if user.is_authenticated %}
-            <form method="post" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="logout-button">Logout</button>
-            </form>
-        {% else %}
-            <script>
-                window.location.href = "{% url 'login' %}";
-            </script>
-        {% endif %}
-    </div>
 {% endblock content %}

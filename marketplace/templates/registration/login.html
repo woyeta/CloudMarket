@@ -36,9 +36,15 @@
         <button type="submit" class="btn">Login</button> 
     </form>
 {% else %}
-    <script>
-        window.location.href = "{% url 'app_publishing' %}";
-    </script>
+    {% if user.user_type == 'developer' %}
+        <script>
+            window.location.href = "{% url 'app_publishing' %}";
+        </script>
+    {% else %}
+        <script>
+            window.location.href = "{% url 'homepage' %}";
+        </script>
+    {% endif %}
 {% endif %}
 
 {% endblock content %}
