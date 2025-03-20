@@ -98,7 +98,7 @@
     <h1>{{ app.app_name }}</h1>
     
     <p><strong>Developed By:</strong> {{ app.developer.developer_alias }}</p>
-    <p><strong>Rating:</strong> ⭐ {{ app.rating }}</p>
+    <p><strong>Rating:</strong> ⭐ {{ app.rating|floatformat:2}}</p>
     <p><strong>Downloads:</strong> 📥 {{ app.downloads }}</p>
     <p><strong>Released on:</strong> 📅 {{ app.release_date }}</p>
 
