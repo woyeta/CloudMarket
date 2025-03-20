@@ -3,5 +3,47 @@
 {% block title %}CloudMarket-Home{% endblock title %}
 
 {% block content %}
-    <h2>Welcome to CloudMarket</h2>
+<style>
+    .logout-button {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .logout-button:hover {
+        background-color: #cc0000;
+    }
+
+    .login-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .login-button:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<h2>Welcome to CloudMarket</h2>
+<div>
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    {% else %}
+        <form method="get" action="{% url 'login' %}">
+            <button type="submit" class="login-button">Login</button>
+        </form>
+    {% endif %}
+</div>
 {% endblock content %}

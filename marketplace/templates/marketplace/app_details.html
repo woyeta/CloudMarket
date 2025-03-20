@@ -1,35 +1,129 @@
 {% extends "marketplace/base.html" %}
 
-{% block title %}{{app.app_name}}{% endblock title %}
+{% block title %}{{ app.app_name }}{% endblock title %}
 
 {% block content %}
-<h1>{{app.app_name}}</h1>
-<p>Developed By: {{app.developer.developer_alias}}</p>
-<p>Rating: {{app.rating}}</p>
-<p>Downloads: {{app.downloads}}</p>
-<p>Released on: {{ app.release_date }}</p>
+<style>
+    /* Main container for app details */
+    .app-details-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 25px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        font-family: 'Arial', sans-serif;
+    }
 
-{% if app.price > 0 %}
-<p>Price: {{app.price}}</p>
-{% else %}
-<p>Price: Free</p>
-{% endif %}
+    /* App title */
+    .app-details-container h1 {
+        color: #333;
+        font-size: 30px;
+        text-align: center;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
 
-<h3>Description</h3>
-<p>{{app.app_description}}</p>
+    /* Subtitle details */
+    .app-details-container p {
+        font-size: 16px;
+        color: #444;
+        margin: 5px 0;
+        line-height: 1.6;
+    }
 
-<h3>Categories</h3>
-<ul>
-    {% for category in app.categories.all %}
-        <li>{{ category.category_name }}</li>
-    {% endfor %}
-</ul>
-        
-<h3>Compatible Operating Systems</h3>
-<ul>
-    {% for os in app.os.all %}
-        <li>{{ os.os_name }}</li>
-    {% endfor %}
-</ul>
+    /* Sections headers (h3) */
+    .app-details-container h3 {
+        color: #222;
+        font-size: 22px;
+        margin-top: 25px;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #007bff;
+        font-weight: 600;
+    }
+
+    /* Category & OS list */
+    .app-details-container ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .app-details-container ul li {
+        background: #f2f7ff;
+        padding: 10px;
+        margin: 6px 0;
+        border-radius: 6px;
+        font-size: 16px;
+        color: #333;
+        font-weight: 500;
+    }
+
+    /* Price styling */
+    .app-price {
+        font-size: 18px;
+        font-weight: bold;
+        padding: 8px;
+        border-radius: 6px;
+        display: inline-block;
+    }
+
+    .app-price.paid {
+        color: #fff;
+        background: #d9534f;
+    }
+
+    .app-price.free {
+        color: #fff;
+        background: #28a745;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .app-details-container {
+            padding: 20px;
+            margin: 20px;
+        }
+
+        .app-details-container h1 {
+            font-size: 26px;
+        }
+
+        .app-details-container h3 {
+            font-size: 20px;
+        }
+    }
+</style>
+
+<div class="app-details-container">
+    <h1>{{ app.app_name }}</h1>
+    
+    <p><strong>Developed By:</strong> {{ app.developer.developer_alias }}</p>
+    <p><strong>Rating:</strong> ⭐ {{ app.rating }}</p>
+    <p><strong>Downloads:</strong> 📥 {{ app.downloads }}</p>
+    <p><strong>Released on:</strong> 📅 {{ app.release_date }}</p>
+
+    {% if app.price > 0 %}
+        <p class="app-price paid">💰 Price: ₹{{ app.price }}</p>
+    {% else %}
+        <p class="app-price free">🆓 Price: Free</p>
+    {% endif %}
+
+    <h3>Description</h3>
+    <p>{{ app.app_description }}</p>
+
+    <h3>Categories</h3>
+    <ul>
+        {% for category in app.categories.all %}
+            <li>📌 {{ category.category_name }}</li>
+        {% endfor %}
+    </ul>
+    
+    <h3>Compatible Operating Systems</h3>
+    <ul>
+        {% for os in app.os.all %}
+            <li>🖥 {{ os.os_name }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
 {% endblock content %}

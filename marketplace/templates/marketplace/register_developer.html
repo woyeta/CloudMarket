@@ -4,10 +4,120 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <h2>Register - Developer</h2>
-    <form method="POST">
+<style>
+    .registration-container {
+        display: flex;
+        align-items: center;
+        align-self: center;
+        flex-direction: column;
+        max-width: 450px;
+        margin: 2rem auto;
+        padding: 2rem;
+        text-align: left;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .registration-container:hover {
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .registration-title {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        font-weight: 600;
+        font-family: 'Montserrat', 'Open Sans', sans-serif;
+    }
+
+    .registration-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group {
+        margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #34495e;
+        font-weight: 500;
+    }
+
+    .form-group input {
+        width: calc(100% - 1.6rem);
+        padding: 0.8rem;
+        border: 1px solid #bdc3c7;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        box-sizing: border-box; 
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    .error-message {
+        color: #e74c3c;
+        font-size: 0.9rem;
+        margin-top: 0.4rem;
+        font-weight: 500;
+    }
+    
+
+    .submit-button {
+        background-color: #3498db;
+        color: white;
+        padding: 0.8rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+
+    .submit-button:hover {
+        background-color: #2980b9;
+    }
+    
+    .submit-button:active {
+        transform: translateY(1px);
+    }
+
+    @media (max-width: 480px) {
+        .registration-container {
+            max-width: 100%;
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+
+        .registration-title {
+            font-size: 1.5rem;
+        }
+
+        .form-group input,
+        .submit-button {
+            font-size: 0.9rem;
+        }
+    }
+    </style>
+
+<div class="registration-container">
+    <h2 class="registration-title">Register - Developer</h2>
+    <form method="POST"class="registration-form">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type=submit name="register">Register</button>
+        <button type=submit name="register"class="submit-button">Register</button>
     </form>
+</div>
 {% endblock content %}

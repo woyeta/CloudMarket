@@ -4,9 +4,41 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <form method="POST">
+<style>
+
+    .login-form button,
+    .login-form .btn { 
+        width: 10%;
+        align-self: center;
+        background-color: #4CAF50 !important; 
+        color: white !important;
+        border: none !important;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .login-form button:hover,
+    .login-form .btn:hover {
+        background-color: #45a049 !important;
+    }
+
+
+</style>
+
+{% if not user.is_authenticated %}
+    <form method="POST" class="login-form">
         {% csrf_token %}
-        {{form|crispy}}
-        <button type="submit">Login</button>
+        {{ form|crispy }}
+        <button type="submit" class="btn">Login</button> 
     </form>
+{% else %}
+    <script>
+        window.location.href = "{% url 'app_publishing' %}";
+    </script>
+{% endif %}
+
 {% endblock content %}
