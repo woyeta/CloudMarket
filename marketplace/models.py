@@ -43,8 +43,14 @@ class Category(models.Model):
     category_name = models.CharField(max_length=25, unique = True, blank = False, null = False)
     description = models.CharField(max_length=150, unique = True, blank = False, null = False)
 
+    def __str__(self):
+        return self.category_name
+
 class OperatingSystem(models.Model):
     os_name = models.CharField(max_length=25, unique = True, blank = False, null = False)
+
+    def __str__(self):
+        return self.os_name
 
 class Application(models.Model):
     developer = models.ForeignKey(Developer, on_delete=models.CASCADE, related_name='developed_apps')

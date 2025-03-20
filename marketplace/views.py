@@ -95,7 +95,13 @@ def add_app_review(response, app_id):
         if form.is_valid():
             form.save()
 
-            return redirect(f'/apps/{app.id}/')
+        else:
+            # Invalid Form
+            # for field,error in form.errors.items():
+            #     print(f"Error in {field}: {error}")
+            pass
+            
+        return redirect(f'/apps/{app.id}/')
     
     form = ApplicationReviewForm(app=app, user=response.user)
     
