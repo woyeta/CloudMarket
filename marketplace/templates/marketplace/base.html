@@ -9,12 +9,17 @@
     <div>
         {% block content %}{% endblock %}
     </div>
-
-    <div>
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="logout-button">Logout</button>
-        </form>
-    </div>
+    {% if user.is_authenticated %}
+        <div>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </div>
+    {% else %}
+        <div>
+            <p><a href="/login/">Login</a></p>
+        </div>
+    {% endif %}
 </body>
 </html>
