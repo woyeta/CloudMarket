@@ -1,7 +1,7 @@
 {% extends "marketplace/base.html" %}
 
 {% block title %}{{ app.app_name }}{% endblock title %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 <style>
     /* Main container for app details */
@@ -124,6 +124,21 @@
             <li>🖥 {{ os.os_name }}</li>
         {% endfor %}
     </ul>
+
+    {% if review_form %}
+        <div class="review-form">
+            <h4>Add Your Review</h4>
+            <form method="POST">
+                {% csrf_token %}
+                {{ review_form|crispy }}
+                <button type="submit" class="submit-review-btn">Submit Review</button>
+            </form>
+        </div>
+    {% elif user.is_authenticated %}
+        <p>You've already reviewed this app.</p>
+    {% else %}
+        <p>Please <a href="{% url 'login' %}">log in</a> to leave a review.</p>
+    {% endif %}
 </div>
 
 {% endblock content %}

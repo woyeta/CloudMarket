@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from .models import VerifiedUser, Developer, Application
+from .models import VerifiedUser, Developer, Application, Review
 from .forms import VerifiedUserRegistrationForm, DeveloperRegistrationForm, ApplicationPublishForm, ApplicationReviewForm
 
 def home(response):
@@ -74,33 +74,32 @@ def view_app_details(response, app_id):
 
     user_purchased = False
 
-    context = {
-        'app': app, 
-        'reviews': reviews,
-        'user_purchased': user_purchased,
+    user_reviewed = False
 
-    }
+    if response.user.is_authenticated:
+        user_reviewed = Review.objects.filter(
+            reviewer=response.user, 
+            app_reviewed=app
+        ).exists()
 
-    return render(response, 'marketplace/app_details.html', context)
-
-@login_required
-def add_app_review(response, app_id):
-    app = get_object_or_404(Application, id=app_id)
-
-    if response.method=="POST":
+    if response.method=="POST" and response.user.is_authenticated and not user_reviewed:
         form = ApplicationReviewForm(response.POST, app=app, user=response.user)
 
         if form.is_valid():
             form.save()
-
-        else:
-            # Invalid Form
-            # for field,error in form.errors.items():
-            #     print(f"Error in {field}: {error}")
-            pass
             
         return redirect(f'/apps/{app.id}/')
-    
-    form = ApplicationReviewForm(app=app, user=response.user)
-    
-    return render(response, 'marketplace/review_app.html', {'form': form, 'app_name': app.app_name})
+    else:
+        if response.user.is_authenticated and not user_reviewed:
+            form = ApplicationReviewForm(app=app, user=response.user)
+        else:
+            form = None
+
+    context = {
+        'app': app, 
+        'reviews': reviews,
+        'user_purchased': user_purchased,
+        'review_form': form
+    }
+
+    return render(response, 'marketplace/app_details.html', context)
