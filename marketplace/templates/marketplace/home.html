@@ -34,16 +34,5 @@
 </style>
 
 <h2>Welcome to CloudMarket</h2>
-<div>
-    {% if user.is_authenticated %}
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="logout-button">Logout</button>
-        </form>
-    {% else %}
-        <form method="get" action="{% url 'login' %}">
-            <button type="submit" class="login-button">Login</button>
-        </form>
-    {% endif %}
-</div>
+
 {% endblock content %}
