@@ -14,32 +14,138 @@
             background-color: #f4f4f4;
             text-align: center;
         }
-/* 
-        div {
-            margin: 20px;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        } */
 
-        .logout-button {
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+        /* Navigation bar styles */
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .logout-button:hover {
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 14px 0;
+        }
+
+        .navbar-links {
+            display: flex;
+        }
+
+        .navbar-links a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .navbar-links a:hover {
+            background-color: #555;
+        }
+
+        .navbar-auth {
+            display: flex;
+        }
+
+        .navbar-auth a, .navbar-auth form button {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar-auth a {
+            background-color: #007bff;
+        }
+
+        .navbar-auth a:hover {
+            background-color: #0056b3;
+        }
+
+        .navbar-auth form button {
+            background-color: #ff4d4d;
+        }
+
+        .navbar-auth form button:hover {
             background-color: #cc0000;
+        }
+
+        /* Content container */
+        .content-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .navbar-links, .navbar-auth {
+                width: 100%;
+                flex-direction: column;
+            }
+            
+            .navbar-links a, .navbar-auth a, .navbar-auth form button {
+                width: 100%;
+                padding: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="navbar-container">
+            <a href="{% url 'homepage' %}" class="navbar-logo">CloudMarket</a>
+            
+            <div class="navbar-links">
+                <a href="{% url 'homepage' %}">Home</a>
+                {% if user.is_authenticated and user.user_type == 'developer' %}
+                    <a href="{% url 'app_publishing' %}">Publish App</a>
+                {% endif %}
+            </div>
+            
+            <div class="navbar-auth">
+                {% if user.is_authenticated %}
+                    <span style="color: white; padding: 14px 16px;">Hello, {{ user.username }}</span>
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'verified_user_registration' %}">Register as User</a>
+                    <a href="{% url 'developer_registration' %}">Register as Developer</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-container">
         {% block content %}{% endblock %}
     </div>
 </body>
