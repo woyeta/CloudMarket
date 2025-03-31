@@ -105,13 +105,6 @@ class ApplicationReviewForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.app = kwargs.pop('app', None)
         self.user = kwargs.pop('user', None)
-        self.verified_user = None
-        
-        if self.user and self.user.user_type == 'customer':
-            try:
-                self.verified_user = VerifiedUser.objects.get(user=self.user)
-            except VerifiedUser.DoesNotExist:
-                pass
 
         super(ApplicationReviewForm, self).__init__(*args, **kwargs)
     
@@ -121,13 +114,9 @@ class ApplicationReviewForm(forms.ModelForm):
         if not self.user:
             raise forms.ValidationError("User is required to submit a review.")
         
-        if self.user.user_type == 'developer':
-            raise forms.ValidationError("Developers are not allowed to submit reviews.")
-        
-        if self.user.user_type == 'customer':
-            
+        else:
             existing_review = Review.objects.filter(
-                reviewer=self.verified_user, 
+                reviewer=self.user, 
                 app_reviewed=self.app
             ).exists()
             
@@ -139,8 +128,8 @@ class ApplicationReviewForm(forms.ModelForm):
     def save(self, commit=True):
         review = super().save(commit=False)
         
-        if self.verified_user:
-            review.reviewer = self.verified_user
+        if self:
+            review.reviewer = self.user
             review.app_reviewed = self.app
         
         if commit:

@@ -50,6 +50,7 @@ def login_redirect(response):
 def publish_app(response):
     if not response.user.user_type=='developer':
         return redirect('/')
+
     
     if response.method=="POST":
         form = ApplicationPublishForm(response.POST)
@@ -86,9 +87,6 @@ def view_app_details(response, app_id):
 def add_app_review(response, app_id):
     app = get_object_or_404(Application, id=app_id)
 
-    if response.user.user_type=='developer':
-        return redirect('/')
-    
     if response.method=="POST":
         form = ApplicationReviewForm(response.POST, app=app, user=response.user)
 

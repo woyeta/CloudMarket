@@ -78,7 +78,7 @@ class Application(models.Model):
     
 
 class Review(models.Model):
-    reviewer = models.ForeignKey(VerifiedUser, on_delete=models.CASCADE, related_name="reviews_made")
+    reviewer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="reviews_made")
     app_reviewed = models.ForeignKey(Application, on_delete=models.CASCADE, related_name="reviews_received")
     rating_given = models.IntegerField(default= 1, blank = False, null= False, validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.CharField(max_length=100, blank = True, null = True)
@@ -96,7 +96,7 @@ class Payment(models.Model):
         ('upi', 'UPI'),
         ('card', 'Card')
     )
-    payer = models.ForeignKey(VerifiedUser, on_delete=models.CASCADE, related_name="payments_made")
+    payer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="payments_made")
     app_purchased = models.ForeignKey(Application, on_delete=models.CASCADE, related_name="payments_received")
     amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     payment_date = models.DateField(auto_now_add=True)
