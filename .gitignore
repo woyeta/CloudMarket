@@ -179,7 +179,6 @@ migrations/**/__pycache__/
 # Static and Media Files
 staticfiles/
 static/
-media/
 
 # Gunicorn
 gunicorn.log
