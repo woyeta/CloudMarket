@@ -35,8 +35,13 @@ class VerifiedUser(models.Model):
     payment_method = models.CharField(max_length=4, choices=PAYMENT_CHOICES, blank=False, null=False, default='upi')
 
 class Developer(models.Model):
+    PAYMENT_CHOICES = (
+        ('upi', 'UPI'),
+        ('card', 'Card')
+    )
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="developer_user")
     developer_alias = models.CharField(max_length=15, unique=True, blank = False, null = False)
+    payment_method = models.CharField(max_length=4, choices=PAYMENT_CHOICES, blank=False, null=False, default='upi')
     payment_details = models.CharField(max_length=51, unique=False, blank = False, null = False)
 
 class Category(models.Model):

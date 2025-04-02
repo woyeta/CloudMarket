@@ -8,137 +8,353 @@
     .app-details-container {
         max-width: 800px;
         margin: 50px auto;
-        padding: 25px;
+        padding: 30px;
         background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        font-family: 'Arial', sans-serif;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        font-family: 'Segoe UI', 'Roboto', sans-serif;
+    }
+
+    /* App header section */
+    .app-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 25px;
+        position: relative;
     }
 
     /* App title */
-    .app-details-container h1 {
-        color: #333;
-        font-size: 30px;
-        text-align: center;
-        margin-bottom: 10px;
-        font-weight: bold;
-    }
-
-    /* Subtitle details */
-    .app-details-container p {
-        font-size: 16px;
-        color: #444;
-        margin: 5px 0;
-        line-height: 1.6;
-    }
-
-    /* Sections headers (h3) */
-    .app-details-container h3 {
+    .app-title {
         color: #222;
-        font-size: 22px;
-        margin-top: 25px;
-        padding-bottom: 5px;
-        border-bottom: 2px solid #007bff;
-        font-weight: 600;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-align: center;
     }
 
-    /* Category & OS list */
-    .app-details-container ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    .app-details-container ul li {
-        background: #f2f7ff;
-        padding: 10px;
-        margin: 6px 0;
-        border-radius: 6px;
+    /* Developer info */
+    .developer-info {
+        color: #555;
         font-size: 16px;
-        color: #333;
-        font-weight: 500;
+        margin-bottom: 20px;
     }
 
-    /* Price styling */
+    /* Stats container */
+    .app-stats {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 25px;
+        width: 100%;
+    }
+
+    /* Individual stat items */
+    .stat-item {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 12px 20px;
+        min-width: 150px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-value {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin-top: 5px;
+    }
+
+    .stat-label {
+        font-size: 14px;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Price badge */
     .app-price {
         font-size: 18px;
-        font-weight: bold;
-        padding: 8px;
-        border-radius: 6px;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 50px;
         display: inline-block;
+        letter-spacing: 0.5px;
+        margin-bottom: 20px;
+        transition: transform 0.2s;
+    }
+
+    .app-price:hover {
+        transform: scale(1.05);
     }
 
     .app-price.paid {
         color: #fff;
-        background: #d9534f;
+        background: linear-gradient(135deg, #ff6b6b, #ee5253);
     }
 
     .app-price.free {
         color: #fff;
-        background: #28a745;
+        background: linear-gradient(135deg, #20bf6b, #0fb9b1);
+    }
+
+    /* Section headers */
+    .section-heading {
+        color: #222;
+        font-size: 22px;
+        margin: 35px 0 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #3498db;
+        font-weight: 600;
+    }
+
+    /* Description text */
+    .app-description {
+        color: #444;
+        line-height: 1.7;
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+
+    /* Categories & OS lists */
+    .feature-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .feature-item {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        padding: 10px 15px;
+        border-radius: 50px;
+        font-size: 14px;
+        color: #333;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-2px);
+    }
+
+    /* Review section */
+    .review-section {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 35px;
+    }
+
+    .review-heading {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .submit-review-btn {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        width: 100%;
+    }
+
+    .submit-review-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+    }
+
+    .login-prompt {
+        text-align: center;
+        padding: 15px;
+        background: #f1f9ff;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+
+    .login-prompt a {
+        color: #3498db;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .login-prompt a:hover {
+        text-decoration: underline;
     }
 
     /* Responsive design */
     @media (max-width: 768px) {
         .app-details-container {
             padding: 20px;
-            margin: 20px;
+            margin: 15px;
+            border-radius: 12px;
         }
 
-        .app-details-container h1 {
+        .app-title {
             font-size: 26px;
         }
 
-        .app-details-container h3 {
-            font-size: 20px;
+        .app-stats {
+            flex-direction: column;
+            gap: 10px;
         }
+        
+        .stat-item {
+            width: 100%;
+        }
+    }
+
+    .app-actions {
+        display: flex;
+        justify-content: center;
+        margin: 25px 0;
+    }
+    
+    .action-button {
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+        border: none;
+    }
+    
+    .purchase-button {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white;
+    }
+    
+    .download-button {
+        background: linear-gradient(135deg, #20bf6b, #0fb9b1);
+        color: white;
+    }
+    
+    .action-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .action-button i {
+        font-size: 18px;
+    }
+    
+    .login-button {
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .login-button:hover {
+        color: white;
+        text-decoration: none;
     }
 </style>
 
 <div class="app-details-container">
-    <h1>{{ app.app_name }}</h1>
+    <div class="app-header">
+        <h1 class="app-title">{{ app.app_name }}</h1>
+        <div class="developer-info">Developed by {{ app.developer.developer_alias }}</div>
+        
+        {% if app.price > 0 %}
+            <div class="app-price paid">💰 ₹{{ app.price }}</div>
+        {% else %}
+            <div class="app-price free">🆓 Free</div>
+        {% endif %}
+    </div>
     
-    <p><strong>Developed By:</strong> {{ app.developer.developer_alias }}</p>
-    <p><strong>Rating:</strong> ⭐ {{ app.rating|floatformat:2}}</p>
-    <p><strong>Downloads:</strong> 📥 {{ app.downloads }}</p>
-    <p><strong>Released on:</strong> 📅 {{ app.release_date }}</p>
+    <div class="app-stats">
+        <div class="stat-item">
+            <div class="stat-label">Rating</div>
+            <div class="stat-value">⭐ {{ app.rating|floatformat:2 }}</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">Downloads</div>
+            <div class="stat-value">📥 {{ app.downloads }}</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">Released</div>
+            <div class="stat-value">📅 {{ app.release_date }}</div>
+        </div>
+    </div>
 
-    {% if app.price > 0 %}
-        <p class="app-price paid">💰 Price: ₹{{ app.price }}</p>
-    {% else %}
-        <p class="app-price free">🆓 Price: Free</p>
-    {% endif %}
+    <div class="app-actions">
+        {% if user.is_authenticated %}
+            {% if user_purchased %}
+                <form action="{% url 'download_app' app.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="action-button download-button">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </form>
+            {% else %}
+                <form action="{% url 'purchase_app' app.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="action-button purchase-button">
+                        <i class="fas fa-shopping-cart"></i> Purchase {% if app.price > 0 %}for ₹{{ app.price }}{% endif %}
+                    </button>
+                </form>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'login' %}" class="action-button login-button">
+                <i class="fas fa-sign-in-alt"></i> Log in to Purchase
+            </a>
+        {% endif %}
+    </div>
 
-    <h3>Description</h3>
-    <p>{{ app.app_description }}</p>
+    <h3 class="section-heading">Description</h3>
+    <p class="app-description">{{ app.app_description }}</p>
 
-    <h3>Categories</h3>
-    <ul>
+    <h3 class="section-heading">Categories</h3>
+    <div class="feature-list">
         {% for category in app.categories.all %}
-            <li>📌 {{ category.category_name }}</li>
+            <div class="feature-item">📌 {{ category.category_name }}</div>
         {% endfor %}
-    </ul>
+    </div>
     
-    <h3>Compatible Operating Systems</h3>
-    <ul>
+    <h3 class="section-heading">Compatible Operating Systems</h3>
+    <div class="feature-list">
         {% for os in app.os.all %}
-            <li>🖥 {{ os.os_name }}</li>
+            <div class="feature-item">🖥 {{ os.os_name }}</div>
         {% endfor %}
-    </ul>
+    </div>
 
-    {% if review_form %}
-        <div class="review-form">
-            <h4>Add Your Review</h4>
+    <div class="review-section">
+        {% if review_form %}
+            <h4 class="review-heading">Add Your Review</h4>
             <form method="POST">
                 {% csrf_token %}
                 {{ review_form|crispy }}
                 <button type="submit" class="submit-review-btn">Submit Review</button>
             </form>
-        </div>
-    {% elif user.is_authenticated %}
-        <p>You've already reviewed this app.</p>
-    {% else %}
-        <p>Please <a href="{% url 'login' %}">log in</a> to leave a review.</p>
-    {% endif %}
+        {% elif user.is_authenticated %}
+            <p class="login-prompt">You've already reviewed this app.</p>
+        {% else %}
+            <p class="login-prompt">Please <a href="{% url 'login' %}">log in</a> to leave a review.</p>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock content %}
