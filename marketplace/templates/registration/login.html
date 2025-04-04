@@ -5,36 +5,115 @@
 
 {% block content %}
 <style>
-
+    .login-container {
+        max-width: 500px;
+        margin: 5rem auto;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+    
+    .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .login-header h2 {
+        color:rgb(13, 25, 111);
+        font-weight: 600;
+    }
+    
+    .login-header p {
+        color: #6c757d;
+    }
+    
+    .login-form {
+        padding: 1rem;
+    }
+    
+    .login-form label {
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .login-form input {
+        border-radius: 5px;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        margin-bottom: 1rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    
+    .login-form input:focus {
+        border-color:rgb(103, 111, 220);
+        box-shadow: 0 0 0 0.25rem rgba(103, 111, 220, 0.25);
+    }
+    
     .login-form button,
     .login-form .btn { 
-        width: 10%;
-        align-self: center;
-        background-color: #4CAF50 !important; 
+        width: 100%;
+        background-color: #007bff !important; 
         color: white !important;
         border: none !important;
-        padding: 10px;
+        padding: 12px;
         border-radius: 5px;
         cursor: pointer;
         font-size: 16px;
-        margin-top: 10px;
-        text-align: center;
+        font-weight: 500;
+        margin-top: 1.5rem;
+        transition: background-color 0.3s ease;
     }
-
+    
     .login-form button:hover,
     .login-form .btn:hover {
-        background-color: #45a049 !important;
+        background-color: #0056b3 !important;
+        transform: translateY(-2px);
+    }
+    
+    .additional-links {
+        text-align: center;
+        margin-top: 1.5rem;
+    }
+    
+    .additional-links a {
+        color:rgb(236, 16, 16);
+        text-decoration: none;
+        font-size: 14px;
+        margin: 0 10px;
+    }
+    
+    .additional-links a:hover {
+        text-decoration: underline;
     }
 
-
+    /* Responsive adjustments */
+    @media (max-width: 576px) {
+        .login-container {
+            margin: 2rem auto;
+            padding: 1.5rem;
+        }
+    }
 </style>
 
 {% if not user.is_authenticated %}
-    <form method="POST" class="login-form">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn">Login</button> 
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="login-container">
+                <div class="login-header">
+                    <h2>Welcome to CloudMarket</h2>
+                    <p>Sign in to continue to your account</p>
+                </div>
+                <form method="POST" class="login-form">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% else %}
     {% if user.user_type == 'developer' %}
         <script>
