@@ -31,8 +31,234 @@
     .login-button:hover {
         background-color: #45a049;
     }
+
+    /* Improved styles for app display */
+    .app-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+    }
+
+    .app-card {
+        border: none;
+        border-radius: 12px;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .app-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .app-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #4776E6, #8E54E9);
+    }
+
+    .app-name {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #333;
+        line-height: 1.3;
+    }
+
+    .app-price {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 15px;
+        background-color: #f0f7ff;
+        color: #2c7be5;
+    }
+
+    .free-tag {
+        background-color: #e3fcef;
+        color: #00a86b;
+    }
+
+    .app-rating {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+
+    .star {
+        color: #FFD700;
+        margin-right: 3px;
+        font-size: 18px;
+    }
+
+    .rating-number {
+        margin-left: 5px;
+        color: #555;
+    }
+
+    .app-description {
+        color: #555;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+    }
+
+    .app-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 8px;
+    }
+
+    .meta-label {
+        color: #888;
+        margin-right: 5px;
+    }
+
+    .view-details {
+        display: inline-block;
+        background: linear-gradient(90deg, #4776E6, #8E54E9);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        text-decoration: none;
+        margin-top: 15px;
+        text-align: center;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        width: 90%;
+    }
+
+    .view-details:hover {
+        background: linear-gradient(90deg, #3d68cf, #7940d7);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(71, 118, 230, 0.3);
+    }
+
+    .filters {
+        margin-bottom: 30px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .page-title {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #333;
+        position: relative;
+        display: inline-block;
+    }
+
+    .page-title::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #4776E6, #8E54E9);
+    }
+
+    .os-tag {
+        display: inline-block;
+        background-color: #f0f0f0;
+        color: #666;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+
+    .developer-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .developer-avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: #e0e0ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+        font-weight: bold;
+        color: #5d5fef;
+    }
 </style>
 
-<h2>Welcome to CloudMarket</h2>
+{% if applications %}
+    <div class="app-grid">
+        {% for app in applications %}
+            <div class="app-card">
+                <div class="app-name">{{ app.app_name }}</div>
+                
+                <div class="app-price {% if app.price == 0 %}free-tag{% endif %}">
+                    {% if app.price > 0 %}${{ app.price }}{% else %}Free{% endif %}
+                </div>
+                
+                <div class="developer-info">
+                    <div class="developer-avatar">{{ app.developer.developer_alias|slice:":1" }}</div>
+                    <span>{{ app.developer.developer_alias }}</span>
+                </div>
+                
+                <div class="app-rating">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= app.rating %}
+                            <span class="star">★</span>
+                        {% else %}
+                            <span class="star" style="color: #e0e0e0;">★</span>
+                        {% endif %}
+                    {% endfor %}
+                    <span class="rating-number">({{ app.rating|floatformat:1 }})</span>
+                </div>
+                
+                <div class="app-description">{{ app.app_description }}</div>
+                
+                <div class="app-meta">
+                    <span><span class="meta-label">Downloads:</span> {{ app.downloads }}</span>
+                    <span><span class="meta-label">Released:</span> {{ app.release_date|date:"M d, Y" }}</span>
+                </div>
+                
+                <div class="app-meta">
+                    <span>
+                        {% for os in app.os.all %}
+                            <span class="os-tag">{{ os.os_name }}</span>
+                        {% endfor %}
+                    </span>
+                </div>
+                
+                <a href="/apps/{{ app.id }}/" class="view-details">View Details</a>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No applications available at the moment.</p>
+{% endif %}
 
 {% endblock content %}

@@ -1,18 +1,139 @@
 {% extends "marketplace/base.html" %}
 
-{% block title %}Publish App{% endblock title %}
+{% block title %}CloudMarket - Publish App{% endblock title %}
 {% load crispy_forms_tags %}
 
 {% block content %}
 <style>
+    .publish-container {
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+    
+    .publish-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .publish-header h2 {
+        color: rgb(13, 25, 111);
+        font-weight: 600;
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .publish-form {
+        padding: 0.5rem;
+    }
+    
+    /* Enhanced form field styling */
+    .publish-form .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .publish-form label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 0.25rem;
+        display: block;
+        font-size: 0.95rem;
+    }
+    
+    .publish-form .form-control {
+        border-radius: 5px;
+        padding: 8px 12px;
+        border: 1px solid #ced4da;
+        width: 100%;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+    
+    .publish-form .form-control:focus {
+        border-color: rgb(103, 111, 220);
+        box-shadow: 0 0 0 0.25rem rgba(103, 111, 220, 0.25);
+        outline: none;
+    }
+    
+    .publish-form textarea.form-control {
+        min-height: 80px;
+        resize: vertical;
+    }
+    
+    .publish-form select.form-control {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        padding-right: 40px;
+    }
+    
+    .publish-form .help-text {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+    
+    /* Custom checkbox styling */
+    .publish-form .form-check {
+        padding-left: 25px;
+        position: relative;
+        margin-bottom: 10px;
+    }
+    
+    .publish-form .form-check-input {
+        width: 18px;
+        height: 18px;
+        margin-left: -25px;
+        margin-top: 2px;
+    }
+    
+    /* File input styling */
+    .publish-form input[type="file"] {
+        padding: 8px;
+        border: 1px dashed #ced4da;
+        background-color: #f8f9fa;
+        width: 100%;
+        font-size: 0.9rem;
+    }
+    
+    .publish-form input[type="file"]:hover {
+        background-color: #e9ecef;
+    }
+    
+    .publish-button {
+        width: 100%;
+        background-color: #007bff !important;
+        color: white !important;
+        border: none !important;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-top: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .publish-button:hover {
+        background-color: #0056b3 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+    }
+    
+    /* Preserve the existing button styles but make them more compact */
     .logout-button {
         background-color: #ff4d4d;
         color: white;
         border: none;
-        padding: 10px 15px;
+        padding: 8px 12px;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 0.9rem;
     }
 
     .logout-button:hover {
@@ -23,35 +144,92 @@
         background-color: #4CAF50;
         color: white;
         border: none;
-        margin:10px ; 
-        padding: 10px 15px;
+        margin: 8px;
+        padding: 8px 12px;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 0.9rem;
     }
+    
     .login-button:hover {
         background-color: #45a049;
     }
-    .publish-button {
-        background-color: #00a7fa;
-        color: white;
-        border: none;
-        margin:10px ; 
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-    .publish-button:hover {
-        background-color: #2980b9;
-    }
 
-
+    /* Make crispy forms look better */
+    .asteriskField {
+        color: #dc3545;
+        margin-left: 2px;
+        font-size: 0.9rem;
+    }
+    
+    .invalid-feedback {
+        color: #dc3545;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+    }
+    
+    /* Improved responsive adjustments */
+    @media (max-width: 768px) {
+        .publish-container {
+            margin: 1rem;
+            padding: 1rem;
+            max-width: 100%;
+        }
+        
+        .publish-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .publish-form {
+            padding: 0;
+        }
+        
+        .publish-form .form-control {
+            padding: 6px 10px;
+        }
+        
+        .publish-button {
+            padding: 8px;
+            margin-top: 1rem;
+        }
+    }
+    
+    /* Small screen optimization */
+    @media (max-width: 480px) {
+        .publish-container {
+            margin: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+        }
+        
+        .publish-header {
+            margin-bottom: 1rem;
+        }
+        
+        .publish-header h2 {
+            font-size: 1.25rem;
+        }
+        
+        .publish-form .form-group {
+            margin-bottom: 0.75rem;
+        }
+    }
 </style>
-    <h2>Publish App</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type=submit class="publish-button" name="publish_app">Publish</button>
-    </form>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="publish-container">
+                <div class="publish-header">
+                    <h2>Publish Your App</h2>
+                </div>
+                <form method="POST" class="publish-form">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="publish-button" name="publish_app">Publish</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

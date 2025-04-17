@@ -9,7 +9,8 @@ import os
 from django.conf import settings
 
 def home(response):
-    return render(response, "marketplace/home.html", {})
+    applications = Application.objects.all().order_by('-release_date')
+    return render(response, "marketplace/home.html", {"applications": applications})
 
 def verified_user_registration(response):
     if response.method=="POST":
