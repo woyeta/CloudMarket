@@ -176,10 +176,6 @@ cython_debug/
 # Django Migrations Cache
 migrations/**/__pycache__/
 
-# Static and Media Files
-staticfiles/
-static/
-
 # Gunicorn
 gunicorn.log
 
