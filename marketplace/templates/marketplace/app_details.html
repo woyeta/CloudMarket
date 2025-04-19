@@ -271,6 +271,73 @@
         color: white;
         text-decoration: none;
     }
+
+    /* New CSS for Reviews List */
+    .reviews-list {
+        margin-top: 30px;
+    }
+    
+    .review-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s;
+    }
+    
+    .review-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .reviewer-name {
+        font-weight: 600;
+        color: #333;
+        font-size: 16px;
+    }
+    
+    .review-date {
+        color: #777;
+        font-size: 14px;
+    }
+    
+    .review-rating {
+        margin-bottom: 10px;
+        color: #f39c12;
+        font-size: 18px;
+    }
+    
+    .review-comment {
+        color: #444;
+        line-height: 1.5;
+    }
+    
+    .no-reviews {
+        text-align: center;
+        padding: 20px;
+        color: #777;
+        font-style: italic;
+    }
+    
+    .reviews-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .review-count {
+        color: #777;
+        font-size: 16px;
+        font-weight: normal;
+    }
 </style>
 
 <div class="app-details-container">
@@ -339,6 +406,39 @@
         {% for os in app.os.all %}
             <div class="feature-item">🖥 {{ os.os_name }}</div>
         {% endfor %}
+    </div>
+
+    <!-- New Reviews List Section -->
+    <h3 class="section-heading reviews-heading">
+        Reviews
+        <span class="review-count">{{ app.reviews_received.count }} reviews</span>
+    </h3>
+    
+    <div class="reviews-list">
+        {% if app.reviews_received.all %}
+            {% for review in app.reviews_received.all %}
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-name">{{ review.reviewer.username }}</div>
+                        <div class="review-date">{{ review.creation_date }}</div>
+                    </div>
+                    <div class="review-rating">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= review.rating_given %}
+                                ⭐
+                            {% else %}
+                                ☆
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% if review.comment %}
+                        <div class="review-comment">{{ review.comment }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-reviews">No reviews yet for this app.</div>
+        {% endif %}
     </div>
 
     <div class="review-section">
