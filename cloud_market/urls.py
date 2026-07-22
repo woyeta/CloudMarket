@@ -20,6 +20,7 @@ from marketplace import views as marketplace_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('marketplace.api.urls')),
     path('', include('marketplace.urls')),
     path('', include('django.contrib.auth.urls')),
     path('login-redirect/', marketplace_views.login_redirect, name="login_redirect")
