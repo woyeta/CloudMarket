@@ -192,3 +192,4 @@ secrets.json
 # Celery
 celerybeat.pid
 celerybeat-schedule
+implementation-plan.md

@@ -3,6 +3,7 @@ from django.db.models import Avg
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django_countries.fields import CountryField
 from django.core.validators import MaxValueValidator, MinValueValidator
+from pgvector.django import VectorField, HnswIndex
 
 # Create your models here.
 class CustomUser(AbstractUser):
@@ -60,7 +61,7 @@ class OperatingSystem(models.Model):
 class Application(models.Model):
     developer = models.ForeignKey(Developer, on_delete=models.CASCADE, related_name='developed_apps')
     app_name = models.CharField(max_length=25, unique = True, blank = False, null = False)
-    app_description = models.CharField(max_length=150, unique = True, blank = False, null = True)
+    app_description = models.TextField(max_length=1000, blank=False, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)], blank = False, null = False, default=0)
     rating = models.FloatField(default=0.0, validators=[MinValueValidator(0), MaxValueValidator(5)])
     os = models.ManyToManyField(OperatingSystem, related_name='os_apps')
@@ -68,6 +69,19 @@ class Application(models.Model):
     release_date = models.DateField(auto_now_add=True)
     categories = models.ManyToManyField(Category, related_name="category_apps")
 
+    # Semantic search embedding (768-dimensional vector from gemini-embedding-2)
+    embedding = VectorField(dimensions=768, null=True, blank=True)
+
+    class Meta:
+        indexes = [
+            HnswIndex(
+                name='app_embedding_hnsw_idx',
+                fields=['embedding'],
+                m=16,
+                ef_construction=64,
+                opclasses=['vector_cosine_ops'],
+            )
+        ]
 
     def update_rating(self):
         avg_rating = self.reviews_received.aggregate(avg_rating = Avg('rating_given'))['avg_rating']
