@@ -210,7 +210,213 @@
         font-weight: bold;
         color: #5d5fef;
     }
+
+    /* ── AI Search Bar ────────────────────────────────────── */
+    .search-container {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .search-form {
+        display: flex;
+        max-width: 700px;
+        margin: 0 auto;
+        box-shadow: 0 4px 15px rgba(71, 118, 230, 0.15);
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+        border: 2px solid transparent;
+        transition: border-color 0.3s ease;
+    }
+
+    .search-form:focus-within {
+        border-color: #4776E6;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 16px 20px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        color: #333;
+        background: transparent;
+    }
+
+    .search-input::placeholder {
+        color: #aaa;
+    }
+
+    .search-btn {
+        padding: 16px 28px;
+        background: linear-gradient(90deg, #4776E6, #8E54E9);
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: opacity 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .search-btn:hover {
+        opacity: 0.9;
+    }
+
+    .search-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    /* ── AI Explanation Box ───────────────────────────────── */
+    .ai-explanation {
+        display: none;
+        max-width: 700px;
+        margin: 20px auto;
+        padding: 16px 20px;
+        background: linear-gradient(135deg, #f0f4ff 0%, #f5f0ff 100%);
+        border-left: 4px solid #4776E6;
+        border-radius: 8px;
+        text-align: left;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #444;
+    }
+
+    .ai-explanation.visible {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .ai-explanation .ai-icon {
+        font-size: 20px;
+        color: #4776E6;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    /* ── Error / Empty State ─────────────────────────────── */
+    .search-message {
+        display: none;
+        max-width: 700px;
+        margin: 20px auto;
+        padding: 16px 20px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .search-message.error {
+        background-color: #fff5f5;
+        color: #c53030;
+        border: 1px solid #fed7d7;
+    }
+
+    .search-message.info {
+        background-color: #f0f4ff;
+        color: #4776E6;
+        border: 1px solid #dce4ff;
+    }
+
+    .search-message.visible {
+        display: block;
+    }
+
+    /* ── Loading Spinner ─────────────────────────────────── */
+    .search-loading {
+        display: none;
+        text-align: center;
+        padding: 40px;
+        color: #888;
+        font-size: 16px;
+    }
+
+    .search-loading.visible {
+        display: block;
+    }
+
+    .search-loading .spinner {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border: 3px solid #e0e0e0;
+        border-top: 3px solid #4776E6;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* ── Clear Search Button ─────────────────────────────── */
+    .clear-search-btn {
+        display: none;
+        margin: 15px auto;
+        padding: 8px 20px;
+        background: #f0f0f0;
+        color: #666;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+
+    .clear-search-btn:hover {
+        background: #e0e0e0;
+    }
+
+    .clear-search-btn.visible {
+        display: inline-block;
+    }
 </style>
+
+<!-- AI-Powered Search -->
+<div class="search-container">
+    <form class="search-form" id="ai-search-form">
+        {% csrf_token %}
+        <input
+            type="text"
+            class="search-input"
+            id="ai-search-input"
+            placeholder="Describe what you're looking for... e.g. 'an app to help me learn guitar'"
+            maxlength="300"
+            autocomplete="off"
+        />
+        <button type="submit" class="search-btn" id="ai-search-btn">
+            <i class="fas fa-search"></i>
+            Discover
+        </button>
+    </form>
+</div>
+
+<!-- AI Explanation (hidden by default) -->
+<div class="ai-explanation" id="ai-explanation">
+    <i class="fas fa-robot ai-icon"></i>
+    <p id="ai-explanation-text"></p>
+</div>
+
+<!-- Error / Info Messages (hidden by default) -->
+<div class="search-message" id="search-message"></div>
+
+<!-- Loading State (hidden by default) -->
+<div class="search-loading" id="search-loading">
+    <span class="spinner"></span>
+    Searching with AI...
+</div>
+
+<!-- Clear Search Button (hidden by default) -->
+<button class="clear-search-btn" id="clear-search-btn">
+    <i class="fas fa-times"></i> Clear Search — Show All Apps
+</button>
 
 {% if applications %}
     <div class="app-grid">
@@ -260,5 +466,253 @@
 {% else %}
     <p>No applications available at the moment.</p>
 {% endif %}
+
+<script>
+(function() {
+    // ── DOM Element References ──────────────────────────────────────
+    const searchForm      = document.getElementById('ai-search-form');
+    const searchInput     = document.getElementById('ai-search-input');
+    const searchBtn       = document.getElementById('ai-search-btn');
+    const explanationBox  = document.getElementById('ai-explanation');
+    const explanationText = document.getElementById('ai-explanation-text');
+    const messageBox      = document.getElementById('search-message');
+    const loadingBox      = document.getElementById('search-loading');
+    const clearBtn        = document.getElementById('clear-search-btn');
+    const appGrid         = document.querySelector('.app-grid');
+    const emptyState      = document.querySelector('.content-container > p');
+
+    // Store the original catalog HTML so we can restore it on "Clear"
+    const originalGridHTML = appGrid ? appGrid.innerHTML : '';
+    const originalEmptyHTML = emptyState ? emptyState.outerHTML : '';
+
+    // ── CSRF Token ──────────────────────────────────────────────────
+    // Read from the hidden input rendered by {% csrf_token %}
+    function getCSRFToken() {
+        const input = searchForm.querySelector('[name=csrfmiddlewaretoken]');
+        return input ? input.value : '';
+    }
+
+    // ── UI State Helpers ────────────────────────────────────────────
+    function showLoading() {
+        loadingBox.classList.add('visible');
+        explanationBox.classList.remove('visible');
+        messageBox.classList.remove('visible');
+        searchBtn.disabled = true;
+    }
+
+    function hideLoading() {
+        loadingBox.classList.remove('visible');
+        searchBtn.disabled = false;
+    }
+
+    function showExplanation(text) {
+        explanationText.textContent = text;
+        explanationBox.classList.add('visible');
+    }
+
+    function showMessage(text, type) {
+        // type: 'error' or 'info'
+        messageBox.textContent = text;
+        messageBox.className = 'search-message visible ' + type;
+    }
+
+    function hideMessages() {
+        explanationBox.classList.remove('visible');
+        messageBox.classList.remove('visible');
+    }
+
+    function showClearButton() {
+        clearBtn.classList.add('visible');
+    }
+
+    function hideClearButton() {
+        clearBtn.classList.remove('visible');
+    }
+
+    // ── Render App Cards ────────────────────────────────────────────
+    // Replicates the exact HTML structure from the Django template
+    function renderAppCard(app) {
+        const priceDisplay = app.price > 0
+            ? `$${parseFloat(app.price).toFixed(2)}`
+            : 'Free';
+        const priceClass = app.price > 0 ? 'app-price' : 'app-price free-tag';
+
+        // Rating stars (1-5)
+        let starsHTML = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= Math.round(app.rating)) {
+                starsHTML += '<span class="star">★</span>';
+            } else {
+                starsHTML += '<span class="star" style="color: #e0e0e0;">★</span>';
+            }
+        }
+
+        // OS tags
+        const osTags = (app.os || [])
+            .map(os => `<span class="os-tag">${escapeHTML(os)}</span>`)
+            .join('');
+
+        // Developer info
+        const alias = app.developer_alias || 'Unknown';
+        const avatarLetter = alias.charAt(0).toUpperCase();
+
+        // Description (truncated by CSS)
+        const description = app.app_description || '';
+
+        // Release date formatting
+        const releaseDate = app.release_date
+            ? new Date(app.release_date).toLocaleDateString('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric'
+              })
+            : '';
+
+        return `
+            <div class="app-card">
+                <div class="app-name">${escapeHTML(app.app_name)}</div>
+                <div class="${priceClass}">${priceDisplay}</div>
+                <div class="developer-info">
+                    <div class="developer-avatar">${avatarLetter}</div>
+                    <span>${escapeHTML(alias)}</span>
+                </div>
+                <div class="app-rating">
+                    ${starsHTML}
+                    <span class="rating-number">(${parseFloat(app.rating).toFixed(1)})</span>
+                </div>
+                <div class="app-description">${escapeHTML(description)}</div>
+                <div class="app-meta">
+                    <span><span class="meta-label">Downloads:</span> ${app.downloads}</span>
+                    <span><span class="meta-label">Released:</span> ${releaseDate}</span>
+                </div>
+                <div class="app-meta">
+                    <span>${osTags}</span>
+                </div>
+                <a href="/apps/${app.id}/" class="view-details">View Details</a>
+            </div>
+        `;
+    }
+
+    function escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function renderResults(apps) {
+        if (!appGrid) return;
+
+        if (apps.length === 0) {
+            appGrid.innerHTML = '';
+            return;
+        }
+
+        appGrid.innerHTML = apps.map(renderAppCard).join('');
+    }
+
+    // ── Search Handler ──────────────────────────────────────────────
+    searchForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const query = searchInput.value.trim();
+        if (!query) {
+            searchInput.focus();
+            return;
+        }
+
+        // Reset UI
+        hideMessages();
+        showLoading();
+
+        // Hide the empty state paragraph if it exists
+        if (emptyState) emptyState.style.display = 'none';
+
+        try {
+            const response = await fetch('/api/search/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken(),
+                },
+                body: JSON.stringify({ query: query }),
+            });
+
+            hideLoading();
+
+            // Handle rate limiting
+            if (response.status === 429) {
+                showMessage(
+                    'You\'re searching too quickly. Please wait a moment and try again.',
+                    'error'
+                );
+                return;
+            }
+
+            const data = await response.json();
+
+            // Case 1: Error from the backend
+            if (data.error) {
+                showMessage(data.error, 'error');
+                // If there are also apps (shouldn't happen with error, but be safe)
+                if (data.apps && data.apps.length > 0) {
+                    renderResults(data.apps);
+                } else {
+                    renderResults([]);
+                }
+                showClearButton();
+                return;
+            }
+
+            // Case 2: No matching apps (with explanation like "try rephrasing")
+            if (!data.apps || data.apps.length === 0) {
+                renderResults([]);
+                if (data.explanation) {
+                    showMessage(data.explanation, 'info');
+                }
+                showClearButton();
+                return;
+            }
+
+            // Case 3: Success — apps found
+            renderResults(data.apps);
+
+            // Show AI explanation if available
+            if (data.explanation) {
+                showExplanation(data.explanation);
+            }
+
+            showClearButton();
+
+        } catch (networkError) {
+            hideLoading();
+            showMessage(
+                'Could not reach the server. Please check your connection and try again.',
+                'error'
+            );
+            console.error('Search fetch error:', networkError);
+        }
+    });
+
+    // ── Clear Search Handler ────────────────────────────────────────
+    clearBtn.addEventListener('click', function() {
+        // Reset the search input
+        searchInput.value = '';
+
+        // Hide all search-related UI
+        hideMessages();
+        hideClearButton();
+
+        // Restore the original catalog
+        if (appGrid) {
+            appGrid.innerHTML = originalGridHTML;
+        }
+
+        // Restore empty state if it was showing
+        if (emptyState) {
+            emptyState.style.display = '';
+        }
+
+        searchInput.focus();
+    });
+})();
+</script>
 
 {% endblock content %}
