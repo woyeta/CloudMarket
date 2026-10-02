@@ -614,6 +614,7 @@
 
         const query = searchInput.value.trim();
         if (!query) {
+            showMessage('Please enter a valid search query.', 'error');
             searchInput.focus();
             return;
         }
@@ -650,7 +651,9 @@
 
             // Case 1: Error from the backend
             if (data.error) {
-                showMessage(data.error, 'error');
+                const isInfo = data.error.toLowerCase().includes('no apps in the marketplace') ||
+                               data.error.toLowerCase().includes('still setting up');
+                showMessage(data.error, isInfo ? 'info' : 'error');
                 // If there are also apps (shouldn't happen with error, but be safe)
                 if (data.apps && data.apps.length > 0) {
                     renderResults(data.apps);
