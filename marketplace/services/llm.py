@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 _client = None
 
-LLM_MODEL = getattr(settings, "GEMINI_INFERENCE_MODEL", "gemini-2.0-flash")
+LLM_MODEL = getattr(settings, "GEMINI_INFERENCE_MODEL", "gemini-flash-lite-latest")
 
 
 def _get_client():
@@ -45,12 +45,15 @@ def generate_explanation(query: str, apps) -> str:
         apps:  A list/queryset of Application instances that matched.
 
     Returns:
-        A string containing the 1-2 sentence explanation.
+        A string containing the 1-2 sentence explanation, or None if unavailable.
 
     Raises:
         google.genai.errors.ClientError: If the API call fails.
         ValueError: If GEMINI_API_KEY is not configured.
     """
+    if not apps or not query:
+        return None
+
     # Build a concise summary of each matched app for the prompt
     app_summaries = "\n".join(
         f"- {app.app_name}: {app.app_description or 'No description'}"
@@ -61,25 +64,26 @@ def generate_explanation(query: str, apps) -> str:
         f'A user searched a software marketplace with the query: "{query}"\n\n'
         f"The following apps were returned as matches:\n"
         f"{app_summaries}\n\n"
-        f"Write a brief 1-2 sentence summary explaining how these apps relate "
-        f"to what the user is looking for. Be concise, specific, and helpful. "
-        f"Do not mention any apps that are not in the list above. "
+        f"Write a concise 1-2 sentence explanation of how the matched apps relate "
+        f"to what the user is looking for. Focus on relevant apps and summarize what they offer. "
+        f"Do not invent features or mention apps outside the list. "
         f"Do not use markdown formatting."
     )
 
     logger.debug(f"LLM prompt ({len(prompt)} chars): {prompt[:200]}...")
 
     client = _get_client()
+    model = getattr(settings, "GEMINI_INFERENCE_MODEL", LLM_MODEL)
     response = client.models.generate_content(
-        model=getattr(settings, "GEMINI_INFERENCE_MODEL", LLM_MODEL),
+        model=model,
         contents=prompt,
         config=types.GenerateContentConfig(
             temperature=0.3,
-            max_output_tokens=150,
+            max_output_tokens=500,
         ),
     )
 
-    explanation = response.text.strip()
+    explanation = (response.text or "").strip() if (response and response.text) else None
     logger.debug(f"LLM response: {explanation}")
 
     return explanation

@@ -156,7 +156,7 @@ LOGOUT_REDIRECT_URL = "/"
 # Gemini API Configuration
 GEMINI_API_KEY = env("GEMINI_API_KEY", default="")
 GEMINI_EMBEDDING_MODEL = env("GEMINI_EMBEDDING_MODEL", default="gemini-embedding-2")
-GEMINI_INFERENCE_MODEL = env("GEMINI_INFERENCE_MODEL", default="gemini-3.8-flash")
+GEMINI_INFERENCE_MODEL = env("GEMINI_INFERENCE_MODEL", default="gemini-flash-lite-latest")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
