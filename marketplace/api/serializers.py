@@ -242,3 +242,42 @@ class PaymentCreateSerializer(serializers.ModelSerializer):
             app.increment_downloads()
 
         return payment
+
+
+# Intent Search Serializers
+class IntentSearchRequestSerializer(serializers.Serializer):
+    """Validates the incoming search request."""
+    query = serializers.CharField(
+        max_length=300,
+        required=True,
+        help_text="Natural language search query, e.g. 'I want to learn guitar as a beginner'",
+    )
+
+
+class IntentSearchAppSerializer(serializers.ModelSerializer):
+    """
+    Serializes matched apps for the search response.
+    Includes developer alias, categories, and OS as readable strings.
+    """
+    developer_alias = serializers.SerializerMethodField()
+    categories = serializers.StringRelatedField(many=True, read_only=True)
+    os = serializers.StringRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Application
+        fields = [
+            'id', 'app_name', 'app_description', 'price', 'rating',
+            'downloads', 'release_date', 'developer_alias', 'categories', 'os',
+        ]
+
+    def get_developer_alias(self, obj):
+        if hasattr(obj, 'developer') and obj.developer:
+            return obj.developer.developer_alias
+        return None
+
+
+class IntentSearchResponseSerializer(serializers.Serializer):
+    """Defines the shape of the search response for documentation."""
+    apps = IntentSearchAppSerializer(many=True)
+    explanation = serializers.CharField(allow_null=True)
+    error = serializers.CharField(allow_null=True)

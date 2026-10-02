@@ -18,6 +18,7 @@ from marketplace.api.views import (
     PaymentListView,
     obtain_auth_token,
 )
+from marketplace.api.search import intent_search
 
 router = DefaultRouter()
 router.register(r'categories', CategoryViewSet, basename='category')
@@ -35,6 +36,9 @@ urlpatterns = [
     # Payment endpoints
     path('apps/<int:app_id>/purchase/', PaymentCreateView.as_view(), name='app-purchase'),
     path('payments/', PaymentListView.as_view(), name='payment-list'),
+
+    # AI-powered intent search
+    path('search/', intent_search, name='intent-search'),
 
     # drf-spectacular schema URLs
     path('schema/', SpectacularAPIView.as_view(), name='schema'),

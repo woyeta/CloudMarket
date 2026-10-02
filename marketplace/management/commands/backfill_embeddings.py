@@ -75,12 +75,12 @@ class Command(BaseCommand):
                 embedding = generate_app_embedding(app)
                 Application.objects.filter(pk=app.pk).update(embedding=embedding)
                 self.stdout.write(
-                    self.style.SUCCESS(f"  [{i}/{total}] ✓ Indexed: {app.app_name}")
+                    self.style.SUCCESS(f"  [{i}/{total}] [OK] Indexed: {app.app_name}")
                 )
                 succeeded += 1
             except Exception as e:
                 self.stderr.write(
-                    self.style.ERROR(f"  [{i}/{total}] ✗ FAILED: {app.app_name} — {e}")
+                    self.style.ERROR(f"  [{i}/{total}] [FAIL] FAILED: {app.app_name} — {e}")
                 )
                 failed += 1
 

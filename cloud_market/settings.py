@@ -156,7 +156,7 @@ LOGOUT_REDIRECT_URL = "/"
 # Gemini API Configuration
 GEMINI_API_KEY = env("GEMINI_API_KEY", default="")
 GEMINI_EMBEDDING_MODEL = env("GEMINI_EMBEDDING_MODEL", default="gemini-embedding-2")
-GEMINI_INFERENCE_MODEL = env("GEMINI_INFERENCE_MODEL", default="gemini-2.0-flash")
+GEMINI_INFERENCE_MODEL = env("GEMINI_INFERENCE_MODEL", default="gemini-3.8-flash")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -173,6 +173,9 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "30/minute",
+    },
 }
 
 # OpenAPI Documentation (drf-spectacular) Configuration
