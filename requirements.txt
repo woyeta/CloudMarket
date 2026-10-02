@@ -13,3 +13,4 @@ typing_extensions==4.12.2
 tzdata==2025.1
 psycopg2-binary
 pgvector
+google-genai

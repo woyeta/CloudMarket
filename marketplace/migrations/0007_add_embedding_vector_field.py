@@ -2,23 +2,33 @@
 
 import pgvector.django.indexes
 import pgvector.django.vector
+from pgvector.django import VectorExtension
 from django.db import migrations
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('marketplace', '0006_expand_app_description'),
+        ("marketplace", "0006_expand_app_description"),
     ]
 
     operations = [
+        VectorExtension(),
         migrations.AddField(
-            model_name='application',
-            name='embedding',
-            field=pgvector.django.vector.VectorField(blank=True, dimensions=768, null=True),
+            model_name="application",
+            name="embedding",
+            field=pgvector.django.vector.VectorField(
+                blank=True, dimensions=768, null=True
+            ),
         ),
         migrations.AddIndex(
-            model_name='application',
-            index=pgvector.django.indexes.HnswIndex(ef_construction=64, fields=['embedding'], m=16, name='app_embedding_hnsw_idx', opclasses=['vector_cosine_ops']),
+            model_name="application",
+            index=pgvector.django.indexes.HnswIndex(
+                ef_construction=64,
+                fields=["embedding"],
+                m=16,
+                name="app_embedding_hnsw_idx",
+                opclasses=["vector_cosine_ops"],
+            ),
         ),
     ]
