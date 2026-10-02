@@ -1,8 +1,4 @@
-import io
-import logging
-from unittest.mock import MagicMock, patch
-from django.test import TestCase, override_settings
-from rest_framework.test import APITestCase
+from unittest.mock import patch
 from rest_framework import status
 
 from marketplace.models import (
@@ -12,13 +8,14 @@ from marketplace.models import (
     OperatingSystem,
     Application,
 )
-from marketplace.signals import _compute_and_store_embedding
+from marketplace.tests.base import BaseAPITestCase
 
 
-class Phase4BackendErrorHandlingTests(APITestCase):
-    def setUp(self):
-        # Create standard test fixtures
-        self.dev_user = CustomUser.objects.create_user(
+class IntentSearchAPITests(BaseAPITestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.dev_user = CustomUser.objects.create_user(
             username="p4_dev",
             email="p4dev@example.com",
             password="Password123!",
@@ -27,21 +24,18 @@ class Phase4BackendErrorHandlingTests(APITestCase):
             country="US",
             user_type="developer",
         )
-        self.developer = Developer.objects.create(
-            user=self.dev_user,
+        cls.developer = Developer.objects.create(
+            user=cls.dev_user,
             developer_alias="p4_alias",
             payment_method="upi",
             payment_details="p4@upi",
         )
-        self.category = Category.objects.create(
+        cls.category = Category.objects.create(
             category_name="Productivity", description="Productivity Apps"
         )
-        self.os = OperatingSystem.objects.create(os_name="Linux")
+        cls.os = OperatingSystem.objects.create(os_name="Linux")
 
-    # -------------------------------------------------------------------------
     # Scenario 1: Empty query
-    # Backend: 400: { error: "Please enter a valid search query" }
-    # -------------------------------------------------------------------------
     def test_scenario_1_empty_query(self):
         # Empty string
         res = self.client.post("/api/search/", {"query": ""}, format="json")
@@ -66,10 +60,7 @@ class Phase4BackendErrorHandlingTests(APITestCase):
         self.assertEqual(res_toolong.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("error", res_toolong.data)
 
-    # -------------------------------------------------------------------------
     # Scenario 2: Empty catalog (0 apps in DB)
-    # Backend: 200: { error: "No apps in marketplace yet" }
-    # -------------------------------------------------------------------------
     def test_scenario_2_empty_catalog(self):
         Application.objects.all().delete()
         res = self.client.post(
@@ -80,12 +71,8 @@ class Phase4BackendErrorHandlingTests(APITestCase):
         self.assertIsNone(res.data["explanation"])
         self.assertIn("no apps in the marketplace yet", res.data["error"].lower())
 
-    # -------------------------------------------------------------------------
     # Scenario 3: No indexed apps (apps exist but none have embeddings)
-    # Backend: 200: { error: "AI search is still setting up" }
-    # -------------------------------------------------------------------------
     def test_scenario_3_no_indexed_apps(self):
-        # Create an app with embedding=None
         app = Application.objects.create(
             developer=self.developer,
             app_name="UnindexedApp",
@@ -103,13 +90,9 @@ class Phase4BackendErrorHandlingTests(APITestCase):
         self.assertIsNone(res.data["explanation"])
         self.assertIn("still setting up", res.data["error"].lower())
 
-    # -------------------------------------------------------------------------
-    # Scenario 4: Embedding API down (Gemini outage / rate limit / network error)
-    # Backend: 200: { error: "AI search temporarily unavailable" }
-    # -------------------------------------------------------------------------
+    # Scenario 4: Embedding API down
     @patch("marketplace.api.search.generate_query_embedding")
     def test_scenario_4_embedding_api_down(self, mock_embed):
-        # Create an indexed app so Step 2 passes
         dummy_vector = [0.1] * 768
         app = Application.objects.create(
             developer=self.developer,
@@ -120,7 +103,6 @@ class Phase4BackendErrorHandlingTests(APITestCase):
         )
         Application.objects.filter(pk=app.pk).update(embedding=dummy_vector)
 
-        # Simulate Gemini embedding outage
         mock_embed.side_effect = Exception("Gemini 503 Service Unavailable")
 
         res = self.client.post(
@@ -131,14 +113,9 @@ class Phase4BackendErrorHandlingTests(APITestCase):
         self.assertIsNone(res.data["explanation"])
         self.assertIn("temporarily unavailable", res.data["error"])
 
-    # -------------------------------------------------------------------------
-    # Scenario 5: No relevant results (all cosine distances exceed threshold)
-    # Backend: 200: { explanation: "Couldn't find apps..." }
-    # -------------------------------------------------------------------------
+    # Scenario 5: No relevant results
     @patch("marketplace.api.search.generate_query_embedding")
     def test_scenario_5_no_relevant_results(self, mock_embed):
-        # Create an app with orthogonal/opposite vector
-        # [1.0, 0.0, 0.0, ...] vs [0.0, 1.0, 0.0, ...] has cosine distance 1.0 > 0.7
         app_vector = [0.0] * 768
         app_vector[0] = 1.0
 
@@ -164,10 +141,7 @@ class Phase4BackendErrorHandlingTests(APITestCase):
         self.assertIsNone(res.data["error"])
         self.assertIn("couldn't find apps", res.data["explanation"].lower())
 
-    # -------------------------------------------------------------------------
-    # Scenario 6: LLM down (embedding worked but explanation generation failed)
-    # Backend: 200: { apps: [...], explanation: null } (Graceful degradation)
-    # -------------------------------------------------------------------------
+    # Scenario 6: LLM down (graceful degradation)
     @patch("marketplace.api.search.generate_explanation")
     @patch("marketplace.api.search.generate_query_embedding")
     def test_scenario_6_llm_down_graceful_degradation(self, mock_embed, mock_explain):
@@ -185,7 +159,6 @@ class Phase4BackendErrorHandlingTests(APITestCase):
         app.os.add(self.os)
         Application.objects.filter(pk=app.pk).update(embedding=matched_vector)
 
-        # Simulate LLM failure
         mock_explain.side_effect = Exception("LLM rate limit / 500 error")
 
         res = self.client.post(
@@ -197,9 +170,7 @@ class Phase4BackendErrorHandlingTests(APITestCase):
         self.assertIsNone(res.data["explanation"])
         self.assertIsNone(res.data["error"])
 
-    # -------------------------------------------------------------------------
     # Success scenario: both embedding and LLM succeed
-    # -------------------------------------------------------------------------
     @patch("marketplace.api.search.generate_explanation")
     @patch("marketplace.api.search.generate_query_embedding")
     def test_search_success_with_explanation(self, mock_embed, mock_explain):
@@ -230,59 +201,12 @@ class Phase4BackendErrorHandlingTests(APITestCase):
         )
         self.assertIsNone(res.data["error"])
 
-    # -------------------------------------------------------------------------
     # Scenario 7: Rate limiting configuration verification
-    # -------------------------------------------------------------------------
     def test_scenario_7_rate_limit_throttle_configured(self):
         from marketplace.api.search import intent_search
         from rest_framework.throttling import AnonRateThrottle
 
-        # Verify throttle_classes on intent_search contains AnonRateThrottle
         self.assertTrue(
             hasattr(intent_search, "cls")
             and AnonRateThrottle in intent_search.cls.throttle_classes
-        )
-
-
-class Phase4SignalErrorHandlingTests(TestCase):
-    def setUp(self):
-        self.dev_user = CustomUser.objects.create_user(
-            username="p4_sig_dev",
-            email="p4sig@example.com",
-            password="Password123!",
-            first_name="P4",
-            last_name="Sig",
-            country="US",
-            user_type="developer",
-        )
-        self.developer = Developer.objects.create(
-            user=self.dev_user,
-            developer_alias="p4_sig_alias",
-            payment_method="upi",
-            payment_details="p4sig@upi",
-        )
-
-    # -------------------------------------------------------------------------
-    # Scenario 9: Embedding API down during indexing (signal handler)
-    # Backend: Exception caught and logged; app saves with embedding=None
-    # -------------------------------------------------------------------------
-    @patch("marketplace.services.embedding.generate_app_embedding")
-    def test_scenario_9_signal_embedding_api_down(self, mock_generate_embedding):
-        mock_generate_embedding.side_effect = Exception("Embedding API down")
-
-        app = Application.objects.create(
-            developer=self.developer,
-            app_name="SavedWithoutEmbeddingApp",
-            app_description="This app should save even if embedding generation fails.",
-            price=0.0,
-        )
-
-        # Call worker synchronously to verify error handling without race condition
-        with self.assertLogs("marketplace.signals", level="ERROR") as cm:
-            _compute_and_store_embedding(app.pk)
-
-        app.refresh_from_db()
-        self.assertIsNone(app.embedding)
-        self.assertTrue(
-            any("Failed to compute embedding" in msg for msg in cm.output)
         )

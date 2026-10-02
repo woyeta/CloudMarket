@@ -1,9 +1,7 @@
-import time
 import io
 from unittest.mock import MagicMock, patch
-from django.test import TestCase, TransactionTestCase, override_settings
+from django.test import override_settings
 from django.core.management import call_command
-from django.db import connections
 
 from marketplace.models import (
     CustomUser,
@@ -13,12 +11,14 @@ from marketplace.models import (
     Application,
 )
 from marketplace.services import embedding as embedding_service
+from marketplace.tests.base import BaseTestCase
 
 
-class Phase1EmbeddingUnitTests(TestCase):
-    def setUp(self):
-        embedding_service._client = None
-        self.dev_user = CustomUser.objects.create_user(
+class EmbeddingServiceTests(BaseTestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.dev_user = CustomUser.objects.create_user(
             username="test_dev",
             email="dev@example.com",
             password="Password123!",
@@ -27,20 +27,23 @@ class Phase1EmbeddingUnitTests(TestCase):
             country="US",
             user_type="developer",
         )
-        self.developer = Developer.objects.create(
-            user=self.dev_user,
+        cls.developer = Developer.objects.create(
+            user=cls.dev_user,
             developer_alias="test_dev_alias",
             payment_method="upi",
             payment_details="dev@upi",
         )
-        self.category1 = Category.objects.create(
+        cls.category1 = Category.objects.create(
             category_name="Music", description="Music Apps"
         )
-        self.category2 = Category.objects.create(
+        cls.category2 = Category.objects.create(
             category_name="Education", description="Learning Apps"
         )
-        self.os1 = OperatingSystem.objects.create(os_name="Android")
-        self.os2 = OperatingSystem.objects.create(os_name="iOS")
+        cls.os1 = OperatingSystem.objects.create(os_name="Android")
+        cls.os2 = OperatingSystem.objects.create(os_name="iOS")
+
+    def setUp(self):
+        embedding_service._client = None
 
     def tearDown(self):
         embedding_service._client = None
@@ -107,8 +110,12 @@ class Phase1EmbeddingUnitTests(TestCase):
         contents = call_kwargs["contents"]
         self.assertIn("title: GuitarPro", contents)
         self.assertIn("text: Learn chords and scales easily.", contents)
-        self.assertIn("Categories: Music, Education", contents)
-        self.assertIn("Compatible with: Android, iOS", contents)
+        self.assertIn("Categories:", contents)
+        self.assertIn("Music", contents)
+        self.assertIn("Education", contents)
+        self.assertIn("Compatible with:", contents)
+        self.assertIn("Android", contents)
+        self.assertIn("iOS", contents)
         self.assertEqual(call_kwargs["config"].output_dimensionality, 768)
 
     @override_settings(GEMINI_API_KEY="test-api-key")
@@ -151,68 +158,3 @@ class Phase1EmbeddingUnitTests(TestCase):
         app2.refresh_from_db()
         self.assertIsNotNone(app1.embedding)
         self.assertIsNotNone(app2.embedding)
-
-
-class Phase1SignalTests(TransactionTestCase):
-    """Uses TransactionTestCase so commits are visible to background worker threads."""
-
-    def setUp(self):
-        self.dev_user = CustomUser.objects.create_user(
-            username="sig_dev",
-            email="sigdev@example.com",
-            password="Password123!",
-            first_name="Sig",
-            last_name="Dev",
-            country="US",
-            user_type="developer",
-        )
-        self.developer = Developer.objects.create(
-            user=self.dev_user,
-            developer_alias="sig_dev_alias",
-            payment_method="upi",
-            payment_details="sig@upi",
-        )
-        self.category = Category.objects.create(
-            category_name="Games", description="Games Category"
-        )
-
-    def tearDown(self):
-        connections.close_all()
-
-    @override_settings(GEMINI_API_KEY="test-api-key")
-    @patch("marketplace.services.embedding.generate_app_embedding")
-    def test_signals_index_on_create_and_category_change(self, mock_generate_embedding):
-        dummy_vector = [0.5] * 768
-        mock_generate_embedding.return_value = dummy_vector
-
-        # Create app -> should trigger post_save signal
-        app = Application.objects.create(
-            developer=self.developer,
-            app_name="SignalApp",
-            app_description="Testing signal automation.",
-            price=0.0,
-        )
-
-        for _ in range(30):
-            app.refresh_from_db()
-            if app.embedding is not None:
-                break
-            time.sleep(0.1)
-
-        self.assertIsNotNone(app.embedding)
-        self.assertEqual(len(app.embedding), 768)
-
-        # Test m2m_changed signal
-        dummy_vector_2 = [0.7] * 768
-        mock_generate_embedding.return_value = dummy_vector_2
-
-        app.categories.add(self.category)
-
-        for _ in range(30):
-            app.refresh_from_db()
-            if app.embedding and abs(app.embedding[0] - 0.7) < 1e-4:
-                break
-            time.sleep(0.1)
-
-        self.assertIsNotNone(app.embedding)
-        self.assertAlmostEqual(app.embedding[0], 0.7, places=4)

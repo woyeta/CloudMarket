@@ -116,6 +116,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Use fast MD5 hasher in tests to dramatically speed up user creation/auth
+import sys
+if "test" in sys.argv:
+    PASSWORD_HASHERS = [
+        "django.contrib.auth.hashers.MD5PasswordHasher",
+    ]
+
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

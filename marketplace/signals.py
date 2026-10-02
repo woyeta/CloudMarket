@@ -54,6 +54,9 @@ def _compute_and_store_embedding(app_pk: int):
             f"until embedding is generated (e.g., on next save or via "
             f"'python manage.py backfill_embeddings')."
         )
+    finally:
+        from django.db import connection
+        connection.close()
 
 
 @receiver(post_save, sender=Application)
