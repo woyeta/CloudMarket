@@ -1,0 +1,863 @@
+{
+  "label": "E-fail-before",
+  "args": {
+    "base_url": "http://127.0.0.1:8000",
+    "queries": "D:\\Cloudmarket\\CloudMarket\\scripts\\search_queries.txt",
+    "label": "E-fail-before",
+    "delay": 0.0,
+    "repeat": 1,
+    "timeout": 60.0,
+    "count_all": true,
+    "flush_cache": false,
+    "redis_url": "redis://localhost:6379/0",
+    "out_dir": "bench"
+  },
+  "summary": {
+    "requests": 50,
+    "valid": 50,
+    "discarded": 0,
+    "failed_search_rate": 1.0,
+    "with_results_rate": 0.0,
+    "modes": {
+      "semantic": 50
+    },
+    "client_wall_ms": {
+      "p50": 895.5,
+      "p95": 1129.4
+    },
+    "stages_ms": {
+      "connect": {
+        "n": 50,
+        "p50": 0.0,
+        "p95": 1.0,
+        "mean": 117.6
+      },
+      "cache": {
+        "n": 50,
+        "p50": 0.0,
+        "p95": 0.0,
+        "mean": 0.0
+      },
+      "embed": {
+        "n": 50,
+        "p50": 0.0,
+        "p95": 0.0,
+        "mean": 0.0
+      },
+      "db": {
+        "n": 50,
+        "p50": 450.1,
+        "p95": 529.3,
+        "mean": 459.2
+      },
+      "total": {
+        "n": 50,
+        "p50": 890.2,
+        "p95": 1125.9,
+        "mean": 1017.9
+      }
+    }
+  },
+  "results": [
+    {
+      "query": "I want to learn guitar as a beginner",
+      "status": 200,
+      "wall_ms": 3193.6,
+      "timing": {
+        "connect": 2691.8,
+        "db": 489.0,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 3182.4
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "track my monthly spending",
+      "status": 200,
+      "wall_ms": 3620.5,
+      "timing": {
+        "connect": 3185.5,
+        "db": 430.0,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 3616.8
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "a password manager for my family",
+      "status": 200,
+      "wall_ms": 883.5,
+      "timing": {
+        "connect": 0.0,
+        "db": 451.3,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 879.2
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "edit videos for youtube",
+      "status": 200,
+      "wall_ms": 888.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 452.0,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 883.9
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "help me focus while studying",
+      "status": 200,
+      "wall_ms": 836.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 416.2,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 833.6
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "learn spanish every day",
+      "status": 200,
+      "wall_ms": 870.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 441.0,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 866.4
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "meditation to reduce stress",
+      "status": 200,
+      "wall_ms": 891.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 443.1,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 887.7
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "send invoices to my clients",
+      "status": 200,
+      "wall_ms": 904.4,
+      "timing": {
+        "connect": 0.0,
+        "db": 472.5,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 901.6
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "code editor with git support",
+      "status": 200,
+      "wall_ms": 933.1,
+      "timing": {
+        "connect": 0.0,
+        "db": 495.6,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 929.6
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "test my REST API",
+      "status": 200,
+      "wall_ms": 1129.4,
+      "timing": {
+        "connect": 0.0,
+        "db": 506.0,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 1125.9
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "record and edit a podcast",
+      "status": 200,
+      "wall_ms": 901.3,
+      "timing": {
+        "connect": 1.0,
+        "db": 434.8,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 882.7
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "scan receipts for taxes",
+      "status": 200,
+      "wall_ms": 1053.4,
+      "timing": {
+        "connect": 0.0,
+        "db": 450.1,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 1031.7
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "protect my laptop from viruses",
+      "status": 200,
+      "wall_ms": 876.3,
+      "timing": {
+        "connect": 0.0,
+        "db": 451.5,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 872.8
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "vpn for public wifi",
+      "status": 200,
+      "wall_ms": 952.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 509.5,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 948.7
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "make music on my computer",
+      "status": 200,
+      "wall_ms": 957.5,
+      "timing": {
+        "connect": 0.0,
+        "db": 445.6,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 954.3
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "practice piano with feedback",
+      "status": 200,
+      "wall_ms": 961.5,
+      "timing": {
+        "connect": 0.0,
+        "db": 477.4,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 958.8
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "plan healthy meals and groceries",
+      "status": 200,
+      "wall_ms": 874.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 424.9,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 871.0
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "track my runs with gps",
+      "status": 200,
+      "wall_ms": 883.7,
+      "timing": {
+        "connect": 0.0,
+        "db": 450.1,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 880.8
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "free up disk space",
+      "status": 200,
+      "wall_ms": 930.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 480.0,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 927.3
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "back up my files automatically",
+      "status": 200,
+      "wall_ms": 896.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 465.4,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 893.2
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "video calls with my team",
+      "status": 200,
+      "wall_ms": 897.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 451.9,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 894.8
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "chat app for my team at work",
+      "status": 200,
+      "wall_ms": 881.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 444.8,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 878.3
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "translate a conversation in another language",
+      "status": 200,
+      "wall_ms": 1075.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 428.0,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 1072.7
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "generate images from text",
+      "status": 200,
+      "wall_ms": 892.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 459.2,
+        "cache": 0.1,
+        "embed": 0.0,
+        "total": 889.9
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "transcribe meeting recordings",
+      "status": 200,
+      "wall_ms": 1100.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 476.9,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 1098.1
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "write better emails with ai",
+      "status": 200,
+      "wall_ms": 873.5,
+      "timing": {
+        "connect": 0.0,
+        "db": 439.6,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 870.8
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "flashcards for exam revision",
+      "status": 200,
+      "wall_ms": 895.5,
+      "timing": {
+        "connect": 0.0,
+        "db": 439.3,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 892.5
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "help with math homework",
+      "status": 200,
+      "wall_ms": 888.3,
+      "timing": {
+        "connect": 0.0,
+        "db": 443.1,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 885.6
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "teach my kids to code",
+      "status": 200,
+      "wall_ms": 862.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 444.0,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 860.0
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "identify stars in the night sky",
+      "status": 200,
+      "wall_ms": 960.4,
+      "timing": {
+        "connect": 0.0,
+        "db": 460.7,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 957.7
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "log my gym workouts",
+      "status": 200,
+      "wall_ms": 894.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 441.9,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 866.6
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "yoga for beginners",
+      "status": 200,
+      "wall_ms": 882.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 456.7,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 879.3
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "track my sleep quality",
+      "status": 200,
+      "wall_ms": 988.7,
+      "timing": {
+        "connect": 0.0,
+        "db": 553.2,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 985.8
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "remind me to drink water",
+      "status": 200,
+      "wall_ms": 1005.5,
+      "timing": {
+        "connect": 0.0,
+        "db": 441.0,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 1002.3
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "split bills with roommates",
+      "status": 200,
+      "wall_ms": 872.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 447.5,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 869.3
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "manage customer leads and sales",
+      "status": 200,
+      "wall_ms": 924.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 488.8,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 921.4
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "keep track of inventory in my shop",
+      "status": 200,
+      "wall_ms": 879.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 440.5,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 876.7
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "file my income tax return",
+      "status": 200,
+      "wall_ms": 906.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 481.2,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 902.9
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "draw a logo",
+      "status": 200,
+      "wall_ms": 895.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 438.8,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 893.0
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "organize my photo library",
+      "status": 200,
+      "wall_ms": 1123.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 529.3,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 1121.2
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "pick colors for my website",
+      "status": 200,
+      "wall_ms": 856.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 434.6,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 854.1
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "take screenshots and annotate them",
+      "status": 200,
+      "wall_ms": 854.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 437.0,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 851.8
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "encrypt sensitive files",
+      "status": 200,
+      "wall_ms": 878.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 448.4,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 876.1
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "two factor authentication codes",
+      "status": 200,
+      "wall_ms": 893.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 450.6,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 890.2
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "schedule social media posts",
+      "status": 200,
+      "wall_ms": 876.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 440.7,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 873.3
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "send large files securely",
+      "status": 200,
+      "wall_ms": 948.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 434.7,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 946.0
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "database client for postgres",
+      "status": 200,
+      "wall_ms": 891.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 456.8,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 888.4
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "manage docker containers",
+      "status": 200,
+      "wall_ms": 975.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 536.6,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 972.6
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "a to-do list that sorts by priority",
+      "status": 200,
+      "wall_ms": 936.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 488.9,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 933.2
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    },
+    {
+      "query": "note taking app with markdown",
+      "status": 200,
+      "wall_ms": 884.3,
+      "timing": {
+        "connect": 0.0,
+        "db": 441.8,
+        "cache": 0.0,
+        "embed": 0.0,
+        "total": 863.5
+      },
+      "mode": "semantic",
+      "apps": 0,
+      "has_explanation": false,
+      "error": "Our AI search is temporarily unavailable. Please try again in a moment."
+    }
+  ]
+}
