@@ -15,6 +15,8 @@ from google import genai
 from google.genai import types
 from django.conf import settings
 
+from marketplace.services.faults import maybe_inject
+
 logger = logging.getLogger(__name__)
 
 # Lazy-initialized client (avoids import-time errors if API key isn't set yet)
@@ -34,7 +36,13 @@ def _get_client():
                 "GEMINI_API_KEY is not set. Add it to your .env file. "
                 "Get a key at https://aistudio.google.com/apikey"
             )
-        _client = genai.Client(api_key=api_key)
+        # Timeout in ms; the SDK does not retry unless retry_options is set,
+        # which is what we want inside a user request.
+        timeout_ms = getattr(settings, "GEMINI_EMBED_TIMEOUT_MS", 0) or None
+        _client = genai.Client(
+            api_key=api_key,
+            http_options=types.HttpOptions(timeout=timeout_ms),
+        )
     return _client
 
 
@@ -78,6 +86,11 @@ def generate_app_embedding(app) -> list[float]:
         contents=text,
         config=types.EmbedContentConfig(
             output_dimensionality=EMBEDDING_DIMENSIONS,
+            # Background indexing isn't latency-sensitive, so it gets a longer
+            # timeout than the per-request default used for search queries.
+            http_options=types.HttpOptions(
+                timeout=getattr(settings, "GEMINI_DOC_EMBED_TIMEOUT_MS", 30000)
+            ),
         ),
     )
 
@@ -102,6 +115,8 @@ def generate_query_embedding(query: str) -> list[float]:
         google.genai.errors.ClientError: If the API call fails.
         ValueError: If GEMINI_API_KEY is not configured.
     """
+    maybe_inject(getattr(settings, "GEMINI_EMBED_TIMEOUT_MS", 0))
+
     # Construct the query text using asymmetric retrieval format
     text = f"task: search result | query: {query}"
 

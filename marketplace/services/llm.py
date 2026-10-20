@@ -16,6 +16,8 @@ from google import genai
 from google.genai import types
 from django.conf import settings
 
+from marketplace.services.faults import maybe_inject
+
 logger = logging.getLogger(__name__)
 
 _client = None
@@ -32,7 +34,11 @@ def _get_client():
             raise ValueError(
                 "GEMINI_API_KEY is not set. Add it to your .env file."
             )
-        _client = genai.Client(api_key=api_key)
+        timeout_ms = getattr(settings, "GEMINI_LLM_TIMEOUT_MS", 0) or None
+        _client = genai.Client(
+            api_key=api_key,
+            http_options=types.HttpOptions(timeout=timeout_ms),
+        )
     return _client
 
 
@@ -53,6 +59,8 @@ def generate_explanation(query: str, apps) -> str:
     """
     if not apps or not query:
         return None
+
+    maybe_inject(getattr(settings, "GEMINI_LLM_TIMEOUT_MS", 0))
 
     # Build a concise summary of each matched app for the prompt
     app_summaries = "\n".join(

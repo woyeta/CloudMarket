@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "crispy_forms",
     "crispy_bootstrap4",
     "django_countries",
@@ -172,6 +173,21 @@ GEMINI_API_KEY = env("GEMINI_API_KEY", default="")
 GEMINI_EMBEDDING_MODEL = env("GEMINI_EMBEDDING_MODEL", default="gemini-embedding-2")
 GEMINI_INFERENCE_MODEL = env("GEMINI_INFERENCE_MODEL", default="gemini-flash-lite-latest")
 
+# Per-request Gemini timeouts in milliseconds (0 = no timeout).
+GEMINI_EMBED_TIMEOUT_MS = env.int("GEMINI_EMBED_TIMEOUT_MS", default=2000)
+GEMINI_LLM_TIMEOUT_MS = env.int("GEMINI_LLM_TIMEOUT_MS", default=4000)
+# Background document embedding (signals, backfill) is not user-facing.
+GEMINI_DOC_EMBED_TIMEOUT_MS = env.int("GEMINI_DOC_EMBED_TIMEOUT_MS", default=30000)
+
+# Fall back to Postgres full-text search when semantic search fails.
+SEARCH_FALLBACK_ENABLED = env.bool("SEARCH_FALLBACK_ENABLED", default=True)
+
+# Fault injection for outage testing: none | fail | hang.
+# Ignored unless ALLOW_FAULT_INJECTION is true.
+ALLOW_FAULT_INJECTION = env.bool("ALLOW_FAULT_INJECTION", default=False)
+GEMINI_FAULT = env("GEMINI_FAULT", default="none")
+GEMINI_FAULT_HANG_S = env.float("GEMINI_FAULT_HANG_S", default=10.0)
+
 # Redis cache for query embeddings and explanations (empty = disabled).
 REDIS_URL = env("REDIS_URL", default="")
 EMBED_CACHE_TTL = env.int("EMBED_CACHE_TTL", default=7 * 24 * 3600)
@@ -218,6 +234,7 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
 }
 
-# Tests never touch a real cache, whatever .env says.
+# Tests never touch a real cache or injected faults, whatever .env says.
 if "test" in sys.argv:
     REDIS_URL = ""
+    ALLOW_FAULT_INJECTION = False

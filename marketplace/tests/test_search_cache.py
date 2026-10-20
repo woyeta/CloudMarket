@@ -124,3 +124,4 @@ class SearchCacheTests(BaseAPITestCase):
             res = self.search("learn guitar")
         self.assertEqual(res.status_code, 200)
         self.assertEqual(len(res.data["apps"]), 1)
+        self.assertEqual(res.data["mode"], "semantic")
