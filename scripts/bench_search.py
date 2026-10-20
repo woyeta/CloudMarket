@@ -127,6 +127,7 @@ def main():
     parser.add_argument("--label", required=True, help="name of this run, used for the output file")
     parser.add_argument("--delay", type=float, default=0.0, help="seconds between requests (Gemini rate limits)")
     parser.add_argument("--repeat", type=int, default=1, help="send the whole query list this many times")
+    parser.add_argument("--limit", type=int, help="only use the first N queries (shorter runs)")
     parser.add_argument("--timeout", type=float, default=60.0)
     parser.add_argument("--count-all", action="store_true", help="don't discard requests (outage runs)")
     parser.add_argument("--flush-cache", action="store_true", help="delete cached embeddings/explanations first")
@@ -135,6 +136,8 @@ def main():
     args = parser.parse_args()
 
     queries = [q.strip() for q in Path(args.queries).read_text(encoding="utf-8").splitlines() if q.strip()]
+    if args.limit:
+        queries = queries[:args.limit]
     if args.flush_cache:
         flush_cache(args.redis_url)
 
