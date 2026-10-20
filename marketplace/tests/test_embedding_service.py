@@ -113,6 +113,8 @@ class EmbeddingServiceTests(BaseTestCase):
         self.assertIn("Categories:", contents)
         self.assertIn("Music", contents)
         self.assertIn("Education", contents)
+        # Background indexing uses the long document timeout, not the 2 s search one
+        self.assertEqual(call_kwargs["config"].http_options.timeout, 30000)
         self.assertIn("Compatible with:", contents)
         self.assertIn("Android", contents)
         self.assertIn("iOS", contents)
