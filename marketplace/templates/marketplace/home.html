@@ -677,6 +677,14 @@
             // Case 3: Success — apps found
             renderResults(data.apps);
 
+            // Served by the keyword fallback while AI search is unavailable
+            if (data.mode === 'keyword') {
+                showMessage(
+                    'AI search is unavailable right now, so these are keyword matches.',
+                    'info'
+                );
+            }
+
             // Show AI explanation if available
             if (data.explanation) {
                 showExplanation(data.explanation);

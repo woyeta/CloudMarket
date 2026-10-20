@@ -3,6 +3,8 @@ from django.db.models import Avg
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django_countries.fields import CountryField
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.search import SearchVector, SearchVectorField
 from pgvector.django import VectorField, HnswIndex
 
 # Create your models here.
@@ -72,6 +74,18 @@ class Application(models.Model):
     # Semantic search embedding (768-dimensional vector from gemini-embedding-2)
     embedding = VectorField(dimensions=768, null=True, blank=True)
 
+    # Full-text search document for the keyword fallback (name weighted above
+    # description). A generated column, so Postgres keeps it current on every
+    # write path, including bulk_create and .update().
+    search_vector = models.GeneratedField(
+        expression=(
+            SearchVector('app_name', weight='A', config='english')
+            + SearchVector('app_description', weight='B', config='english')
+        ),
+        output_field=SearchVectorField(),
+        db_persist=True,
+    )
+
     class Meta:
         indexes = [
             HnswIndex(
@@ -80,7 +94,8 @@ class Application(models.Model):
                 m=16,
                 ef_construction=64,
                 opclasses=['vector_cosine_ops'],
-            )
+            ),
+            GinIndex(fields=['search_vector'], name='app_search_vector_gin'),
         ]
 
     def update_rating(self):

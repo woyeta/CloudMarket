@@ -1,4 +1,6 @@
 from unittest.mock import patch
+
+from django.test import override_settings
 from rest_framework import status
 
 from marketplace.models import (
@@ -60,7 +62,7 @@ class IntentSearchAPITests(BaseAPITestCase):
         self.assertEqual(res_toolong.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("error", res_toolong.data)
 
-    # Scenario 2: Empty catalog (0 apps in DB)
+    # Scenario 2: Empty catalog (0 apps in DB) -> keyword fallback, no results
     def test_scenario_2_empty_catalog(self):
         Application.objects.all().delete()
         res = self.client.post(
@@ -68,8 +70,8 @@ class IntentSearchAPITests(BaseAPITestCase):
         )
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data["apps"], [])
-        self.assertIsNone(res.data["explanation"])
-        self.assertIn("no apps in the marketplace yet", res.data["error"].lower())
+        self.assertIsNone(res.data["error"])
+        self.assertEqual(res.data["mode"], "keyword")
 
     # Scenario 3: No indexed apps (apps exist but none have embeddings)
     def test_scenario_3_no_indexed_apps(self):
@@ -85,9 +87,17 @@ class IntentSearchAPITests(BaseAPITestCase):
         res = self.client.post(
             "/api/search/", {"query": "looking for calculator"}, format="json"
         )
+        # Nothing indexed: served by the keyword fallback instead of an error
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data["apps"], [])
-        self.assertIsNone(res.data["explanation"])
+        self.assertIsNone(res.data["error"])
+        self.assertEqual(res.data["mode"], "keyword")
+
+        # With the fallback switched off, the old message is returned
+        with override_settings(SEARCH_FALLBACK_ENABLED=False):
+            res = self.client.post(
+                "/api/search/", {"query": "looking for calculator"}, format="json"
+            )
         self.assertIn("still setting up", res.data["error"].lower())
 
     # Scenario 4: Embedding API down
@@ -108,9 +118,17 @@ class IntentSearchAPITests(BaseAPITestCase):
         res = self.client.post(
             "/api/search/", {"query": "any valid query"}, format="json"
         )
+        # Embedding failed: served by the keyword fallback instead of an error
         self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIsNone(res.data["error"])
+        self.assertEqual(res.data["mode"], "keyword")
+
+        # With the fallback switched off, the old error is returned
+        with override_settings(SEARCH_FALLBACK_ENABLED=False):
+            res = self.client.post(
+                "/api/search/", {"query": "any valid query"}, format="json"
+            )
         self.assertEqual(res.data["apps"], [])
-        self.assertIsNone(res.data["explanation"])
         self.assertIn("temporarily unavailable", res.data["error"])
 
     # Scenario 5: No relevant results

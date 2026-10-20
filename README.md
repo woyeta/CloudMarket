@@ -49,4 +49,21 @@ DB_HOST=localhost DB_PORT=5433 DB_NAME=cloudmarket DB_USER=postgres DB_PASSWORD=
 
 GitHub Actions runs the same suite, plus a migration-drift check, on every push and pull request.
 
-`GET /healthz` checks the database and returns 503 if it is unreachable.
+## Search: latency and reliability
+
+- **Per-stage timing.** Every search response has a `Server-Timing` header (`connect`, `cache`, `embed`, `db`, `llm`, `keyword`, `total`) and a matching log line.
+- **Caching.** Query embeddings and LLM explanations are cached in Redis (`REDIS_URL`), keyed on the normalized query. Redis is optional: if it's unset or down, search calls Gemini as usual.
+- **Fallback.** Gemini calls have timeouts (`GEMINI_EMBED_TIMEOUT_MS`, `GEMINI_LLM_TIMEOUT_MS`). If the query can't be embedded, search falls back to Postgres full-text search (GIN-indexed generated column) and the response says `"mode": "keyword"`.
+- **Fault injection.** `ALLOW_FAULT_INJECTION=True` with `GEMINI_FAULT=fail|hang` simulates an outage without calling Gemini.
+- **Health check.** `GET /healthz` returns 503 if the database is down; Redis down is reported as `degraded` (200), since search works without it.
+
+Demo data and benchmarks:
+
+```bash
+docker compose up -d redis
+python manage.py seed_mock_data --fixture marketplace/fixtures/demo_apps.json
+python manage.py backfill_embeddings
+python scripts/bench_search.py --label my-run --delay 4
+```
+
+See [BENCHMARKS.md](BENCHMARKS.md) for the method and results.
