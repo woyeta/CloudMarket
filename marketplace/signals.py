@@ -54,6 +54,17 @@ def _compute_and_store_embedding(app_pk: int):
             f"until embedding is generated (e.g., on next save or via "
             f"'python manage.py backfill_embeddings')."
         )
+
+
+def _index_in_background(app_pk: int):
+    """
+    Thread target. Each thread gets its own DB connection, which must be
+    closed when the thread finishes; closing it inside
+    _compute_and_store_embedding would also close the caller's connection
+    when that function is called directly (e.g. from tests).
+    """
+    try:
+        _compute_and_store_embedding(app_pk)
     finally:
         from django.db import connection
         connection.close()
@@ -69,7 +80,7 @@ def index_application_on_save(sender, instance, **kwargs):
     so they won't keep the Django dev server hanging.
     """
     threading.Thread(
-        target=_compute_and_store_embedding,
+        target=_index_in_background,
         args=(instance.pk,),
         daemon=True,
     ).start()
@@ -86,7 +97,7 @@ def index_application_on_category_change(sender, instance, action, **kwargs):
     """
     if action in ("post_add", "post_remove", "post_clear"):
         threading.Thread(
-            target=_compute_and_store_embedding,
+            target=_index_in_background,
             args=(instance.pk,),
             daemon=True,
         ).start()

@@ -7,10 +7,10 @@ djangorestframework==3.15.2
 drf-spectacular==0.28.0
 gunicorn==23.0.0
 packaging==25.0
-django-environ
+django-environ==0.14.0
 sqlparse==0.5.3
-typing_extensions==4.12.2
+typing_extensions==4.16.0
 tzdata==2025.1
-psycopg2-binary
-pgvector
-google-genai
+psycopg2-binary==2.9.13
+pgvector==0.5.0
+google-genai==2.28.0

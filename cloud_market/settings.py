@@ -24,7 +24,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-4$4wi+!h__)=s$u_n%27bt#aab@1e6gz4sm1n=+ayu45!xe70b"
+SECRET_KEY = env("SECRET_KEY", default="django-insecure-dev-only-set-SECRET_KEY-in-env")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=True)
@@ -94,6 +94,8 @@ DATABASES = {
         "PASSWORD": env("DB_PASSWORD", default=""),
         "HOST": env("DB_HOST", default="localhost"),
         "PORT": env("DB_PORT", default="5432"),
+        # Fail fast instead of hanging if the database is unreachable.
+        "OPTIONS": {"connect_timeout": 5},
     }
 }
 

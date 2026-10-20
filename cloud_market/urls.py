@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from marketplace import views as marketplace_views
+from marketplace.health import healthz
 
 urlpatterns = [
+    path('healthz', healthz, name='healthz'),
     path('admin/', admin.site.urls),
     path('api/', include('marketplace.api.urls')),
     path('', include('marketplace.urls')),
