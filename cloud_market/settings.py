@@ -94,6 +94,10 @@ DATABASES = {
         "PASSWORD": env("DB_PASSWORD", default=""),
         "HOST": env("DB_HOST", default="localhost"),
         "PORT": env("DB_PORT", default="5432"),
+        # Reuse connections across requests: a new TLS connection to a remote
+        # Supabase database costs far more than the queries themselves.
+        "CONN_MAX_AGE": env.int("DB_CONN_MAX_AGE", default=60),
+        "CONN_HEALTH_CHECKS": True,
         # Fail fast instead of hanging if the database is unreachable.
         "OPTIONS": {"connect_timeout": 5},
     }
@@ -168,6 +172,11 @@ GEMINI_API_KEY = env("GEMINI_API_KEY", default="")
 GEMINI_EMBEDDING_MODEL = env("GEMINI_EMBEDDING_MODEL", default="gemini-embedding-2")
 GEMINI_INFERENCE_MODEL = env("GEMINI_INFERENCE_MODEL", default="gemini-flash-lite-latest")
 
+# Redis cache for query embeddings and explanations (empty = disabled).
+REDIS_URL = env("REDIS_URL", default="")
+EMBED_CACHE_TTL = env.int("EMBED_CACHE_TTL", default=7 * 24 * 3600)
+EXPL_CACHE_TTL = env.int("EXPL_CACHE_TTL", default=24 * 3600)
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
@@ -184,7 +193,20 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "30/minute",
+        # Raise via env for local benchmark runs only.
+        "anon": env("SEARCH_ANON_THROTTLE", default="30/minute"),
+    },
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "loggers": {
+        "marketplace": {
+            "handlers": ["console"],
+            "level": env("MARKETPLACE_LOG_LEVEL", default="INFO"),
+        },
     },
 }
 
@@ -195,3 +217,7 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
+
+# Tests never touch a real cache, whatever .env says.
+if "test" in sys.argv:
+    REDIS_URL = ""

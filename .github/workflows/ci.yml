@@ -31,6 +31,7 @@ jobs:
       DB_PORT: "5432"
       SECRET_KEY: ci-only-not-secret
       GEMINI_API_KEY: ""   # every Gemini call is mocked in tests
+      REDIS_URL: ""        # cache tests use fakeredis
 
     steps:
       - uses: actions/checkout@v4

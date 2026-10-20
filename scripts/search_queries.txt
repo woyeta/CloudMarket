@@ -1,0 +1,50 @@
+I want to learn guitar as a beginner
+track my monthly spending
+a password manager for my family
+edit videos for youtube
+help me focus while studying
+learn spanish every day
+meditation to reduce stress
+send invoices to my clients
+code editor with git support
+test my REST API
+record and edit a podcast
+scan receipts for taxes
+protect my laptop from viruses
+vpn for public wifi
+make music on my computer
+practice piano with feedback
+plan healthy meals and groceries
+track my runs with gps
+free up disk space
+back up my files automatically
+video calls with my team
+chat app for my team at work
+translate a conversation in another language
+generate images from text
+transcribe meeting recordings
+write better emails with ai
+flashcards for exam revision
+help with math homework
+teach my kids to code
+identify stars in the night sky
+log my gym workouts
+yoga for beginners
+track my sleep quality
+remind me to drink water
+split bills with roommates
+manage customer leads and sales
+keep track of inventory in my shop
+file my income tax return
+draw a logo
+organize my photo library
+pick colors for my website
+take screenshots and annotate them
+encrypt sensitive files
+two factor authentication codes
+schedule social media posts
+send large files securely
+database client for postgres
+manage docker containers
+a to-do list that sorts by priority
+note taking app with markdown

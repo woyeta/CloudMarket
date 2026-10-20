@@ -14,3 +14,4 @@ tzdata==2025.1
 psycopg2-binary==2.9.13
 pgvector==0.5.0
 google-genai==2.28.0
+redis==6.4.0
