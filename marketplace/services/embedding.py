@@ -26,6 +26,18 @@ EMBEDDING_MODEL = getattr(settings, "GEMINI_EMBEDDING_MODEL", "gemini-embedding-
 EMBEDDING_DIMENSIONS = 768
 
 
+# The SDK sends our timeout to the API as the server-side deadline, and the
+# API rejects deadlines under 10 s. Keep the shorter client-side timeout but
+# send the minimum deadline the API accepts.
+_MIN_SERVER_DEADLINE_S = 10
+
+
+def _server_deadline_header(timeout_ms):
+    if timeout_ms and timeout_ms < _MIN_SERVER_DEADLINE_S * 1000:
+        return {"X-Server-Timeout": str(_MIN_SERVER_DEADLINE_S)}
+    return None
+
+
 def _get_client():
     """Get or create the Gemini API client."""
     global _client
@@ -41,7 +53,10 @@ def _get_client():
         timeout_ms = getattr(settings, "GEMINI_EMBED_TIMEOUT_MS", 0) or None
         _client = genai.Client(
             api_key=api_key,
-            http_options=types.HttpOptions(timeout=timeout_ms),
+            http_options=types.HttpOptions(
+                timeout=timeout_ms,
+                headers=_server_deadline_header(timeout_ms),
+            ),
         )
     return _client
 

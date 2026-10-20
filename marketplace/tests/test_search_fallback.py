@@ -162,18 +162,32 @@ class GeminiTimeoutTests(BaseTestCase):
     def test_embedding_client_has_timeout(self, mock_client_cls):
         embedding_service._client = None
         embedding_service._get_client()
-        self.assertEqual(mock_client_cls.call_args.kwargs["http_options"].timeout, 2000)
+        http_options = mock_client_cls.call_args.kwargs["http_options"]
+        self.assertEqual(http_options.timeout, 2000)
+        # The API rejects server deadlines under 10 s, so send the minimum explicitly
+        self.assertEqual(http_options.headers, {"X-Server-Timeout": "10"})
 
     @override_settings(GEMINI_API_KEY="k", GEMINI_LLM_TIMEOUT_MS=4000)
     @patch("marketplace.services.llm.genai.Client")
     def test_llm_client_has_timeout(self, mock_client_cls):
         llm_service._client = None
         llm_service._get_client()
-        self.assertEqual(mock_client_cls.call_args.kwargs["http_options"].timeout, 4000)
+        http_options = mock_client_cls.call_args.kwargs["http_options"]
+        self.assertEqual(http_options.timeout, 4000)
+        self.assertEqual(http_options.headers, {"X-Server-Timeout": "10"})
+
+    @override_settings(GEMINI_API_KEY="k", GEMINI_LLM_TIMEOUT_MS=15000)
+    @patch("marketplace.services.llm.genai.Client")
+    def test_long_timeout_lets_sdk_set_the_deadline(self, mock_client_cls):
+        llm_service._client = None
+        llm_service._get_client()
+        self.assertIsNone(mock_client_cls.call_args.kwargs["http_options"].headers)
 
     @override_settings(GEMINI_API_KEY="k", GEMINI_EMBED_TIMEOUT_MS=0)
     @patch("marketplace.services.embedding.genai.Client")
     def test_zero_means_no_timeout(self, mock_client_cls):
         embedding_service._client = None
         embedding_service._get_client()
-        self.assertIsNone(mock_client_cls.call_args.kwargs["http_options"].timeout)
+        http_options = mock_client_cls.call_args.kwargs["http_options"]
+        self.assertIsNone(http_options.timeout)
+        self.assertIsNone(http_options.headers)

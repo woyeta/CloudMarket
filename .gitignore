@@ -193,3 +193,6 @@ secrets.json
 celerybeat.pid
 celerybeat-schedule
 implementation-plan.md
+
+# Benchmark server logs (results JSON is committed)
+bench/*.server.log

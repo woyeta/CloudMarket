@@ -1,0 +1,919 @@
+{
+  "label": "H-hang-after",
+  "args": {
+    "base_url": "http://127.0.0.1:8000",
+    "queries": "D:\\Cloudmarket\\CloudMarket\\scripts\\search_queries.txt",
+    "label": "H-hang-after",
+    "delay": 0.0,
+    "repeat": 1,
+    "timeout": 60.0,
+    "count_all": true,
+    "flush_cache": false,
+    "redis_url": "redis://localhost:6379/0",
+    "out_dir": "bench"
+  },
+  "summary": {
+    "requests": 50,
+    "valid": 50,
+    "discarded": 0,
+    "failed_search_rate": 0.0,
+    "with_results_rate": 1.0,
+    "modes": {
+      "keyword": 50
+    },
+    "client_wall_ms": {
+      "p50": 5193.3,
+      "p95": 8118.5
+    },
+    "stages_ms": {
+      "connect": {
+        "n": 50,
+        "p50": 0.0,
+        "p95": 2907.3,
+        "mean": 1020.0
+      },
+      "cache": {
+        "n": 50,
+        "p50": 0.0,
+        "p95": 0.0,
+        "mean": 0.0
+      },
+      "embed": {
+        "n": 50,
+        "p50": 2000.3,
+        "p95": 2000.7,
+        "mean": 2000.4
+      },
+      "db": {
+        "n": 50,
+        "p50": 2663.6,
+        "p95": 3125.8,
+        "mean": 2646.1
+      },
+      "keyword": {
+        "n": 50,
+        "p50": 2232.4,
+        "p95": 2699.8,
+        "mean": 2195.5
+      },
+      "total": {
+        "n": 50,
+        "p50": 5189.7,
+        "p95": 8115.1,
+        "mean": 5962.3
+      }
+    }
+  },
+  "results": [
+    {
+      "query": "I want to learn guitar as a beginner",
+      "status": 200,
+      "wall_ms": 8239.6,
+      "timing": {
+        "connect": 3341.3,
+        "db": 2870.7,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 2318.5,
+        "total": 8227.8
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "track my monthly spending",
+      "status": 200,
+      "wall_ms": 7876.1,
+      "timing": {
+        "connect": 2844.8,
+        "db": 3018.4,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 2554.0,
+        "total": 7872.5
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "a password manager for my family",
+      "status": 200,
+      "wall_ms": 5193.3,
+      "timing": {
+        "connect": 0.0,
+        "db": 2716.1,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 2275.5,
+        "total": 5189.7
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "edit videos for youtube",
+      "status": 200,
+      "wall_ms": 5613.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 3125.8,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 2699.8,
+        "total": 5610.6
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "help me focus while studying",
+      "status": 200,
+      "wall_ms": 5192.7,
+      "timing": {
+        "connect": 0.0,
+        "db": 2723.2,
+        "cache": 0.0,
+        "embed": 2000.1,
+        "keyword": 2278.3,
+        "total": 5189.7
+      },
+      "mode": "keyword",
+      "apps": 4,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "learn spanish every day",
+      "status": 200,
+      "wall_ms": 5254.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 2785.8,
+        "cache": 0.0,
+        "embed": 2000.1,
+        "keyword": 2319.3,
+        "total": 5251.6
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "meditation to reduce stress",
+      "status": 200,
+      "wall_ms": 4657.3,
+      "timing": {
+        "connect": 0.0,
+        "db": 2214.2,
+        "cache": 0.0,
+        "embed": 2000.7,
+        "keyword": 1766.4,
+        "total": 4654.4
+      },
+      "mode": "keyword",
+      "apps": 1,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "send invoices to my clients",
+      "status": 200,
+      "wall_ms": 5800.3,
+      "timing": {
+        "connect": 0.0,
+        "db": 3117.2,
+        "cache": 0.0,
+        "embed": 2000.4,
+        "keyword": 2482.0,
+        "total": 5777.3
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "code editor with git support",
+      "status": 200,
+      "wall_ms": 5165.4,
+      "timing": {
+        "connect": 0.0,
+        "db": 2663.6,
+        "cache": 0.0,
+        "embed": 2000.1,
+        "keyword": 2224.4,
+        "total": 5162.3
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "test my REST API",
+      "status": 200,
+      "wall_ms": 5397.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 2896.4,
+        "cache": 0.0,
+        "embed": 2000.6,
+        "keyword": 2447.9,
+        "total": 5375.5
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "record and edit a podcast",
+      "status": 200,
+      "wall_ms": 7545.5,
+      "timing": {
+        "connect": 2907.3,
+        "db": 2627.5,
+        "cache": 0.0,
+        "embed": 2000.3,
+        "keyword": 2190.0,
+        "total": 7542.1
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "scan receipts for taxes",
+      "status": 200,
+      "wall_ms": 8118.5,
+      "timing": {
+        "connect": 2732.1,
+        "db": 3375.3,
+        "cache": 0.0,
+        "embed": 2000.7,
+        "keyword": 2942.7,
+        "total": 8115.1
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "protect my laptop from viruses",
+      "status": 200,
+      "wall_ms": 7046.2,
+      "timing": {
+        "connect": 2759.8,
+        "db": 2275.4,
+        "cache": 0.0,
+        "embed": 2000.1,
+        "keyword": 1840.5,
+        "total": 7042.9
+      },
+      "mode": "keyword",
+      "apps": 3,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "vpn for public wifi",
+      "status": 200,
+      "wall_ms": 6468.8,
+      "timing": {
+        "connect": 2645.4,
+        "db": 1811.8,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 1381.1,
+        "total": 6464.9
+      },
+      "mode": "keyword",
+      "apps": 1,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "make music on my computer",
+      "status": 200,
+      "wall_ms": 5133.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 2677.9,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 2242.9,
+        "total": 5130.3
+      },
+      "mode": "keyword",
+      "apps": 4,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "practice piano with feedback",
+      "status": 200,
+      "wall_ms": 4711.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 2256.6,
+        "cache": 0.0,
+        "embed": 2000.4,
+        "keyword": 1830.0,
+        "total": 4709.1
+      },
+      "mode": "keyword",
+      "apps": 3,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "plan healthy meals and groceries",
+      "status": 200,
+      "wall_ms": 5145.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 2704.8,
+        "cache": 0.0,
+        "embed": 2000.1,
+        "keyword": 2267.5,
+        "total": 5142.8
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "track my runs with gps",
+      "status": 200,
+      "wall_ms": 5074.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 2637.4,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 2210.1,
+        "total": 5072.1
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "free up disk space",
+      "status": 200,
+      "wall_ms": 5100.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 2649.9,
+        "cache": 0.0,
+        "embed": 2000.1,
+        "keyword": 2222.9,
+        "total": 5097.0
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "back up my files automatically",
+      "status": 200,
+      "wall_ms": 5130.7,
+      "timing": {
+        "connect": 0.0,
+        "db": 2659.1,
+        "cache": 0.0,
+        "embed": 2000.1,
+        "keyword": 2202.3,
+        "total": 5127.5
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "video calls with my team",
+      "status": 200,
+      "wall_ms": 5236.3,
+      "timing": {
+        "connect": 0.0,
+        "db": 2804.3,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 2362.1,
+        "total": 5233.7
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "chat app for my team at work",
+      "status": 200,
+      "wall_ms": 5113.4,
+      "timing": {
+        "connect": 0.0,
+        "db": 2660.7,
+        "cache": 0.0,
+        "embed": 2000.3,
+        "keyword": 2235.8,
+        "total": 5110.4
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "translate a conversation in another language",
+      "status": 200,
+      "wall_ms": 7550.2,
+      "timing": {
+        "connect": 2798.1,
+        "db": 2729.2,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 2273.9,
+        "total": 7534.5
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "generate images from text",
+      "status": 200,
+      "wall_ms": 7495.7,
+      "timing": {
+        "connect": 2815.2,
+        "db": 2671.2,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 2232.4,
+        "total": 7492.9
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "transcribe meeting recordings",
+      "status": 200,
+      "wall_ms": 7410.9,
+      "timing": {
+        "connect": 2755.4,
+        "db": 2628.9,
+        "cache": 0.0,
+        "embed": 2000.4,
+        "keyword": 2202.5,
+        "total": 7391.3
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "write better emails with ai",
+      "status": 200,
+      "wall_ms": 7487.5,
+      "timing": {
+        "connect": 2728.7,
+        "db": 2748.7,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 2311.6,
+        "total": 7484.3
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "flashcards for exam revision",
+      "status": 200,
+      "wall_ms": 4736.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 2262.5,
+        "cache": 0.0,
+        "embed": 2000.6,
+        "keyword": 1827.8,
+        "total": 4723.5
+      },
+      "mode": "keyword",
+      "apps": 2,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "help with math homework",
+      "status": 200,
+      "wall_ms": 4646.1,
+      "timing": {
+        "connect": 0.0,
+        "db": 2208.1,
+        "cache": 0.0,
+        "embed": 2000.3,
+        "keyword": 1772.0,
+        "total": 4643.6
+      },
+      "mode": "keyword",
+      "apps": 2,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "teach my kids to code",
+      "status": 200,
+      "wall_ms": 5086.1,
+      "timing": {
+        "connect": 0.0,
+        "db": 2643.5,
+        "cache": 0.0,
+        "embed": 2000.4,
+        "keyword": 2204.1,
+        "total": 5083.3
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "identify stars in the night sky",
+      "status": 200,
+      "wall_ms": 4301.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 1855.8,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 1405.2,
+        "total": 4298.4
+      },
+      "mode": "keyword",
+      "apps": 1,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "log my gym workouts",
+      "status": 200,
+      "wall_ms": 5157.3,
+      "timing": {
+        "connect": 0.0,
+        "db": 2700.9,
+        "cache": 0.0,
+        "embed": 2000.3,
+        "keyword": 2231.0,
+        "total": 5153.5
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "yoga for beginners",
+      "status": 200,
+      "wall_ms": 4611.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 2181.4,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 1752.8,
+        "total": 4609.3
+      },
+      "mode": "keyword",
+      "apps": 3,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "track my sleep quality",
+      "status": 200,
+      "wall_ms": 5285.3,
+      "timing": {
+        "connect": 0.0,
+        "db": 2789.5,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 2255.1,
+        "total": 5282.5
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "remind me to drink water",
+      "status": 200,
+      "wall_ms": 5155.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 2713.0,
+        "cache": 0.0,
+        "embed": 2000.6,
+        "keyword": 2268.8,
+        "total": 5153.0
+      },
+      "mode": "keyword",
+      "apps": 4,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "split bills with roommates",
+      "status": 200,
+      "wall_ms": 7172.7,
+      "timing": {
+        "connect": 2810.5,
+        "db": 2351.6,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 1821.8,
+        "total": 7169.3
+      },
+      "mode": "keyword",
+      "apps": 2,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "manage customer leads and sales",
+      "status": 200,
+      "wall_ms": 7457.1,
+      "timing": {
+        "connect": 2805.5,
+        "db": 2640.4,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 2224.3,
+        "total": 7453.9
+      },
+      "mode": "keyword",
+      "apps": 4,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "keep track of inventory in my shop",
+      "status": 200,
+      "wall_ms": 7531.6,
+      "timing": {
+        "connect": 2749.1,
+        "db": 2770.9,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 2310.1,
+        "total": 7528.4
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "file my income tax return",
+      "status": 200,
+      "wall_ms": 7556.4,
+      "timing": {
+        "connect": 2788.2,
+        "db": 2756.4,
+        "cache": 0.0,
+        "embed": 2001.0,
+        "keyword": 2306.8,
+        "total": 7552.8
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "draw a logo",
+      "status": 200,
+      "wall_ms": 5024.7,
+      "timing": {
+        "connect": 0.0,
+        "db": 2587.5,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 2134.3,
+        "total": 5021.9
+      },
+      "mode": "keyword",
+      "apps": 1,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "organize my photo library",
+      "status": 200,
+      "wall_ms": 5145.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 2686.8,
+        "cache": 0.0,
+        "embed": 2000.4,
+        "keyword": 2235.5,
+        "total": 5117.6
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "pick colors for my website",
+      "status": 200,
+      "wall_ms": 5222.1,
+      "timing": {
+        "connect": 0.0,
+        "db": 2779.1,
+        "cache": 0.0,
+        "embed": 2000.4,
+        "keyword": 2341.5,
+        "total": 5219.1
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "take screenshots and annotate them",
+      "status": 200,
+      "wall_ms": 4666.7,
+      "timing": {
+        "connect": 0.0,
+        "db": 2214.0,
+        "cache": 0.0,
+        "embed": 2000.4,
+        "keyword": 1784.8,
+        "total": 4663.6
+      },
+      "mode": "keyword",
+      "apps": 2,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "encrypt sensitive files",
+      "status": 200,
+      "wall_ms": 5112.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 2654.5,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 2216.5,
+        "total": 5108.7
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "two factor authentication codes",
+      "status": 200,
+      "wall_ms": 5130.5,
+      "timing": {
+        "connect": 0.0,
+        "db": 2702.8,
+        "cache": 0.0,
+        "embed": 2000.3,
+        "keyword": 2257.8,
+        "total": 5127.7
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "schedule social media posts",
+      "status": 200,
+      "wall_ms": 4749.4,
+      "timing": {
+        "connect": 0.0,
+        "db": 2286.1,
+        "cache": 0.0,
+        "embed": 2000.3,
+        "keyword": 1837.9,
+        "total": 4746.7
+      },
+      "mode": "keyword",
+      "apps": 3,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "send large files securely",
+      "status": 200,
+      "wall_ms": 5071.5,
+      "timing": {
+        "connect": 0.0,
+        "db": 2636.8,
+        "cache": 0.0,
+        "embed": 2000.3,
+        "keyword": 2214.4,
+        "total": 5068.7
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "database client for postgres",
+      "status": 200,
+      "wall_ms": 7436.4,
+      "timing": {
+        "connect": 2749.7,
+        "db": 2661.5,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 2235.0,
+        "total": 7420.9
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "manage docker containers",
+      "status": 200,
+      "wall_ms": 7525.6,
+      "timing": {
+        "connect": 2863.3,
+        "db": 2651.5,
+        "cache": 0.0,
+        "embed": 2000.5,
+        "keyword": 2198.4,
+        "total": 7522.4
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "a to-do list that sorts by priority",
+      "status": 200,
+      "wall_ms": 7642.0,
+      "timing": {
+        "connect": 2826.6,
+        "db": 2803.1,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 2354.8,
+        "total": 7638.2
+      },
+      "mode": "keyword",
+      "apps": 4,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "note taking app with markdown",
+      "status": 200,
+      "wall_ms": 8807.3,
+      "timing": {
+        "connect": 3077.3,
+        "db": 3716.9,
+        "cache": 0.0,
+        "embed": 2000.2,
+        "keyword": 3270.7,
+        "total": 8803.5
+      },
+      "mode": "keyword",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    }
+  ]
+}
