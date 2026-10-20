@@ -1,0 +1,410 @@
+{
+  "label": "C-cache-cold",
+  "args": {
+    "base_url": "http://127.0.0.1:8000",
+    "queries": "D:\\Cloudmarket\\CloudMarket\\scripts\\search_queries.txt",
+    "label": "C-cache-cold",
+    "delay": 0.0,
+    "repeat": 1,
+    "limit": 20,
+    "timeout": 60.0,
+    "count_all": false,
+    "flush_cache": true,
+    "redis_url": "redis://localhost:6379/0",
+    "out_dir": "bench"
+  },
+  "summary": {
+    "requests": 20,
+    "valid": 13,
+    "discarded": 7,
+    "failed_search_rate": 0.0,
+    "with_results_rate": 1.0,
+    "modes": {
+      "semantic": 20
+    },
+    "client_wall_ms": {
+      "p50": 10910.4,
+      "p95": 12837.2
+    },
+    "stages_ms": {
+      "connect": {
+        "n": 13,
+        "p50": 0.0,
+        "p95": 0.0,
+        "mean": 0.0
+      },
+      "cache": {
+        "n": 13,
+        "p50": 4.7,
+        "p95": 5.3,
+        "mean": 4.9
+      },
+      "embed": {
+        "n": 13,
+        "p50": 875.2,
+        "p95": 990.5,
+        "mean": 925.6
+      },
+      "db": {
+        "n": 13,
+        "p50": 2850.3,
+        "p95": 3249.5,
+        "mean": 2960.0
+      },
+      "llm": {
+        "n": 13,
+        "p50": 6552.2,
+        "p95": 8623.9,
+        "mean": 6482.9
+      },
+      "total": {
+        "n": 13,
+        "p50": 10907.3,
+        "p95": 12834.3,
+        "mean": 10854.9
+      }
+    }
+  },
+  "results": [
+    {
+      "query": "I want to learn guitar as a beginner",
+      "status": 200,
+      "wall_ms": 11385.5,
+      "timing": {
+        "connect": 0.0,
+        "db": 3380.2,
+        "cache": 6.2,
+        "embed": 990.5,
+        "llm": 6552.2,
+        "total": 11380.9
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "track my monthly spending",
+      "status": 200,
+      "wall_ms": 13818.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 3444.9,
+        "cache": 3.1,
+        "embed": 921.4,
+        "llm": 8968.3,
+        "total": 13814.8
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "a password manager for my family",
+      "status": 200,
+      "wall_ms": 8391.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 3249.5,
+        "cache": 4.9,
+        "embed": 966.8,
+        "llm": 3720.0,
+        "total": 8387.8
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "edit videos for youtube",
+      "status": 200,
+      "wall_ms": 10910.4,
+      "timing": {
+        "connect": 0.0,
+        "db": 2883.0,
+        "cache": 4.8,
+        "embed": 980.1,
+        "llm": 6619.7,
+        "total": 10907.3
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "help me focus while studying",
+      "status": 200,
+      "wall_ms": 12380.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 2906.6,
+        "cache": 5.2,
+        "embed": 934.2,
+        "llm": 7902.4,
+        "total": 12377.1
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "learn spanish every day",
+      "status": 200,
+      "wall_ms": 11519.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 2801.6,
+        "cache": 4.6,
+        "embed": 835.6,
+        "llm": 7362.6,
+        "total": 11499.3
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "meditation to reduce stress",
+      "status": 200,
+      "wall_ms": 9991.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 2876.3,
+        "cache": 4.5,
+        "embed": 824.0,
+        "llm": 5833.4,
+        "total": 9988.3
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "send invoices to my clients",
+      "status": 200,
+      "wall_ms": 8801.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 3013.5,
+        "cache": 4.4,
+        "embed": 818.2,
+        "llm": 4473.4,
+        "total": 8798.6
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "code editor with git support",
+      "status": 200,
+      "wall_ms": 5955.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 3108.6,
+        "cache": 3.0,
+        "embed": 809.7,
+        "llm": 1530.0,
+        "total": 5953.1
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "test my REST API",
+      "status": 200,
+      "wall_ms": 12940.7,
+      "timing": {
+        "connect": 0.0,
+        "db": 2848.6,
+        "cache": 4.6,
+        "embed": 917.1,
+        "llm": 8662.8,
+        "total": 12937.8
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "record and edit a podcast",
+      "status": 200,
+      "wall_ms": 12837.2,
+      "timing": {
+        "connect": 0.0,
+        "db": 2835.1,
+        "cache": 5.3,
+        "embed": 931.6,
+        "llm": 8623.9,
+        "total": 12834.3
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "scan receipts for taxes",
+      "status": 200,
+      "wall_ms": 5899.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 2763.1,
+        "cache": 3.7,
+        "embed": 841.6,
+        "llm": 1810.2,
+        "total": 5879.3
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "protect my laptop from viruses",
+      "status": 200,
+      "wall_ms": 6798.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 2873.2,
+        "cache": 4.0,
+        "embed": 788.3,
+        "llm": 2666.5,
+        "total": 6795.9
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "vpn for public wifi",
+      "status": 200,
+      "wall_ms": 9160.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 2807.3,
+        "cache": 4.9,
+        "embed": 875.2,
+        "llm": 5018.8,
+        "total": 9158.4
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "make music on my computer",
+      "status": 200,
+      "wall_ms": 11271.7,
+      "timing": {
+        "connect": 0.0,
+        "db": 2850.3,
+        "cache": 4.7,
+        "embed": 794.0,
+        "llm": 7166.2,
+        "total": 11245.1
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "practice piano with feedback",
+      "status": 200,
+      "wall_ms": 12142.9,
+      "timing": {
+        "connect": 0.0,
+        "db": 2923.5,
+        "cache": 3.4,
+        "embed": 807.5,
+        "llm": 7958.1,
+        "total": 12140.4
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "plan healthy meals and groceries",
+      "status": 200,
+      "wall_ms": 11321.6,
+      "timing": {
+        "connect": 0.0,
+        "db": 2782.8,
+        "cache": 5.1,
+        "embed": 808.4,
+        "llm": 7110.4,
+        "total": 11296.3
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    },
+    {
+      "query": "track my runs with gps",
+      "status": 200,
+      "wall_ms": 5598.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 2820.5,
+        "cache": 3.4,
+        "embed": 865.1,
+        "llm": 1460.2,
+        "total": 5595.2
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "free up disk space",
+      "status": 200,
+      "wall_ms": 5927.8,
+      "timing": {
+        "connect": 0.0,
+        "db": 3411.4,
+        "cache": 3.5,
+        "embed": 615.0,
+        "llm": 1445.8,
+        "total": 5924.8
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": false,
+      "error": null
+    },
+    {
+      "query": "back up my files automatically",
+      "status": 200,
+      "wall_ms": 10306.0,
+      "timing": {
+        "connect": 0.0,
+        "db": 3245.1,
+        "cache": 4.6,
+        "embed": 1356.6,
+        "llm": 5232.0,
+        "total": 10302.5
+      },
+      "mode": "semantic",
+      "apps": 5,
+      "has_explanation": true,
+      "error": null
+    }
+  ]
+}
